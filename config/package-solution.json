@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "spfx-cm-filters-client-side-solution",
+    "id": "069a371c-fec8-4da7-9dcc-b0cbe0b8649c",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.20.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "spfx-cm-filters description"
+      },
+      "longDescription": {
+        "default": "spfx-cm-filters description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "spfx-cm-filters Feature",
+        "description": "The feature that activates elements of the spfx-cm-filters solution.",
+        "id": "33847822-8c4b-4db3-bb17-7a1708118427",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/spfx-cm-filters.sppkg"
+  }
+}
