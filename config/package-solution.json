@@ -32,6 +32,12 @@
         "id": "33847822-8c4b-4db3-bb17-7a1708118427",
         "version": "1.0.0.0"
       }
+    ],
+    "webApiPermissionRequests": [
+      {
+        "resource": "Office 365 SharePoint Online",
+        "scope": "TermStore.Read.All"
+      }
     ]
   },
   "paths": {

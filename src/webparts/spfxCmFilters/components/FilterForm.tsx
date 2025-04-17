@@ -24,13 +24,16 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   const [applicationDeadline, setApplicationDeadline] = React.useState('');
 
   const SetSessionKeys = (): void => {
-    sessionStorage.setItem(FilterSessionKeys.JobType, selectedJobTypes.join(','));
-    sessionStorage.setItem(FilterSessionKeys.ProgramArea, selectedProgramAreas.join(','));
+    const jobTypes = selectedJobTypes.join(',');
+    const programAreas = selectedProgramAreas.join(',');
+
+    sessionStorage.setItem(FilterSessionKeys.JobType, jobTypes === undefined ? '' : jobTypes);
+    sessionStorage.setItem(FilterSessionKeys.ProgramArea, programAreas === undefined ? '' : programAreas);
     sessionStorage.setItem(FilterSessionKeys.ApplicationDeadline, applicationDeadline);
 
     if (Globals.isDebugMode()) {
-      console.log('\njobType: ' + selectedJobTypes.join(','));
-      console.log('programArea: ' + selectedProgramAreas.join(','));
+      console.log('\njobType: ' + jobTypes);
+      console.log('programArea: ' + programAreas);
       console.log('applicationDeadline: ' + applicationDeadline);
     }
   }
@@ -52,11 +55,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     SetSessionKeys();
   }, [selectedJobTypes, selectedProgramAreas, applicationDeadline]);
 
-  if (Globals.isOpen()) {
-    SetSessionKeys();
-  } else {
-    ClearSessionKeys();
-  }
+  SetSessionKeys();
 
   const borderColor: string = '#c2c2c2';
   const datePickerStyles: IStyleFunctionOrObject<IDatePickerStyleProps, IDatePickerStyles> = {
@@ -194,9 +193,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           id='gcx-cm-filter-apply'
           aria-labelledby='gcx-cm-filter-title'
           aria-label={strings.apply}
-          onClick={() => {
-            SetSessionKeys();
-          }}
         >
           {strings.apply}
         </PrimaryButton>

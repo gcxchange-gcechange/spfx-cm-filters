@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './SpfxCmFilters.module.scss';
 import type { ISpfxCmFiltersProps } from './ISpfxCmFiltersProps';
 import { Globals, Language } from '../Globals';
-import { DefaultButton, IDropdownOption, Icon } from '@fluentui/react';
+import { IDropdownOption } from '@fluentui/react';
 import FilterForm from './FilterForm';
 //import { SessionController } from '../SessionCOntroller';
 
@@ -58,38 +58,19 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
       hasTeamsContext
     } = this.props;
 
-    const open = Globals.isOpen();
-
     return (
       <section className={`${styles.spfxCmFilters} ${hasTeamsContext ? styles.teams : ''}`}>
         <div className={styles.filtersHeader}>
           <h2 id='gcx-cm-filter-title'>
             {this.strings.Filters}
           </h2>
-          <div>
-            <DefaultButton 
-              style={this.buttonStyle} 
-              role='button'
-              aria-label={open ? this.strings.btnExpanderOpen : this.strings.btnExpanderClosed}
-              aria-expanded={open}
-              onClick={() => {
-                Globals.setOpen(!open);
-                this.forceUpdate();
-              }}
-            >
-              <Icon iconName={open ? 'ChevronUp' : 'ChevronDown'} />
-            </DefaultButton>
-          </div>
         </div>
-
-        <div style={{display: open ? 'block' : 'none'}}>
-          <FilterForm
-            jobTypeListEn={jobTypeListEn}
-            jobTypeListFr={jobTypeListFr}
-            programAreaListEn={programAreaListEn}
-            programAreaListFr={programAreaListFr}
-          />
-        </div>
+        <FilterForm
+          jobTypeListEn={jobTypeListEn}
+          jobTypeListFr={jobTypeListFr}
+          programAreaListEn={programAreaListEn}
+          programAreaListFr={programAreaListFr}
+        />
       </section>
     );
   }
