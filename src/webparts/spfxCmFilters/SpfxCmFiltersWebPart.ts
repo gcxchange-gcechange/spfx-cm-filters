@@ -18,6 +18,8 @@ export interface ISpfxCmFiltersWebPartProps {
   language: string;
   debug: boolean;
   cacheTime: number;
+  jobTypeTermSetGuid: string;
+  programAreaTermSetGuid: string;
 }
 
 export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmFiltersWebPartProps> {
@@ -35,7 +37,9 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
         userDisplayName: this.context.pageContext.user.displayName,
         language: this.properties.language,
         debug: this.properties.debug,
-        cacheTime: this.properties.cacheTime
+        cacheTime: this.properties.cacheTime,
+        jobTypeTermSetGuid: this.properties.jobTypeTermSetGuid,
+        programAreaTermSetGuid: this.properties.programAreaTermSetGuid
       }
     );
 
@@ -46,6 +50,8 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
     Globals.setLanguage(this.properties.language);
     Globals.setCacheTime(this.properties.cacheTime ? this.properties.cacheTime : 30);
     Globals.setDebugMode(this.properties.debug);
+    Globals.setJobTypeTermSetGuid(this.properties.jobTypeTermSetGuid);
+    Globals.setProgramAreaTermSetGuid(this.properties.programAreaTermSetGuid);
     
     return this._getEnvironmentMessage().then(message => {
       this._environmentMessage = message;
@@ -121,6 +127,14 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
                   value: Globals.getLanguage(),
                   placeholder: `${Language.English} or ${Language.French}`
                 }),
+                PropertyPaneTextField('jobTypeTermSetGuid', {
+                  label: 'JobType term set GUID',
+                  value: Globals.getJobTypeTermSetGuid(),
+                }),
+                PropertyPaneTextField('programAreaTermSetGuid', {
+                  label: 'ProgramArea term set GUID',
+                  value: Globals.getProgramAreaTermSetGuid(),
+                }),
                 PropertyPaneTextField('cacheTime', {
                   label: 'Cache Time',
                   description: 'Enter a number in minutes',
@@ -156,6 +170,12 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
       case 'cacheTime':
         Globals.setCacheTime(newValue)
         break;
+      case 'jobTypeTermSetGuid':
+        Globals.setJobTypeTermSetGuid(newValue)
+        break;
+      case 'programAreaTermSetGuid':
+        Globals.setProgramAreaTermSetGuid(newValue);
+        break;  
     }
   }
 }

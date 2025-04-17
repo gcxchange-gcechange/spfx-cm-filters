@@ -4,14 +4,14 @@ import type { ISpfxCmFiltersProps } from './ISpfxCmFiltersProps';
 import { Globals, Language } from '../Globals';
 import { IDropdownOption } from '@fluentui/react';
 import FilterForm from './FilterForm';
-//import { SessionController } from '../SessionCOntroller';
+import { SessionController } from '../SessionController';
 
 const jobTypeListEn: IDropdownOption[] = [];
 const jobTypeListFr: IDropdownOption[] = [];
 const programAreaListEn: IDropdownOption[] = [];
 const programAreaListFr: IDropdownOption[] = [];
 
-//const jobTypeCtrl = new SessionController<unknown[]>('gcx-cm-jobTypeList');
+const jobTypeCtrl = new SessionController<unknown[]>('gcx-cm-jobTypeList');
 //const ProgramAreaCtrl = new SessionController<unknown[]>('gcx-cm-programAreaList');
 
 export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> {
@@ -42,8 +42,37 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
   }
 
   private fetchData(): void {
-    // TODO
+    //const reactHandler = this;
 
+    try {
+      jobTypeCtrl.fetch(() => 
+        fetch(`/_api/v2.1/termstore/sets/${Globals.getJobTypeTermSetGuid()}/terms/`, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json;odata=verbose' }
+        }).then(res => res.json())
+      ).then((data) => {
+        console.log(data);
+      });
+    }
+    catch (e) {
+      console.error(e);
+    }
+
+    try {
+      jobTypeCtrl.fetch(() => 
+        fetch(`/_api/v2.1/termstore/sets/${Globals.getProgramAreaTermSetGuid()}/terms/`, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json;odata=verbose' }
+        }).then(res => res.json())
+      ).then((data) => {
+        console.log(data);
+      });
+    }
+    catch (e) {
+      console.error(e);
+    }
+    
+    // REMOVE THIS ONCE WE HAVE REAL DATA
     jobTypeListEn.push({key: '0', text: 'Assignments'});
     jobTypeListEn.push({key: '1', text: 'Deployments'});
     jobTypeListEn.push({key: '2', text: 'Mentoring'});

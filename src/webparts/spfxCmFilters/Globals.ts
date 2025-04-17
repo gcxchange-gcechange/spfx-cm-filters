@@ -9,17 +9,10 @@ export enum Language {
 
 export class Globals {
     private static _language: string;
-    private static _isOpen: boolean = false;
     private static _debugMode: boolean = false;
     private static _cacheTime: number;
-
-    public static isOpen(): boolean {
-        return this._isOpen;
-    }
-
-    public static setOpen(state: boolean):void {
-        this._isOpen = state;
-    }
+    private static _jobTypeTermSetGuid: string;
+    private static _programAreaTermSetGuid: string;
 
     public static getLanguage(): string {
         return this._language;
@@ -63,5 +56,21 @@ export class Globals {
 
     public static setCacheTime(time: number): void {
         this._cacheTime = time;
+    }
+
+    public static getJobTypeTermSetGuid(): string {
+        return this._jobTypeTermSetGuid;
+    }
+
+    public static setJobTypeTermSetGuid(guid: string): void {
+        this._jobTypeTermSetGuid = guid;
+    }
+
+    public static getProgramAreaTermSetGuid(): string {
+        return this._programAreaTermSetGuid;
+    }
+
+    public static setProgramAreaTermSetGuid(guid: string): void {
+        this._programAreaTermSetGuid = guid;
     }
 }
