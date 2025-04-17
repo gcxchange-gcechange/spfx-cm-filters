@@ -130,10 +130,12 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
                 PropertyPaneTextField('jobTypeTermSetGuid', {
                   label: 'JobType term set GUID',
                   value: Globals.getJobTypeTermSetGuid(),
+                  placeholder: '45f37f08-3ff4-4d84-bf21-4a77ddffcf3e'
                 }),
                 PropertyPaneTextField('programAreaTermSetGuid', {
                   label: 'ProgramArea term set GUID',
                   value: Globals.getProgramAreaTermSetGuid(),
+                  placeholder: 'bd807536-d8e7-456b-aab0-fae3eecedd8a'
                 }),
                 PropertyPaneTextField('cacheTime', {
                   label: 'Cache Time',

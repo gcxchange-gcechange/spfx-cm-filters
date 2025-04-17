@@ -74,3 +74,30 @@ export class Globals {
         this._programAreaTermSetGuid = guid;
     }
 }
+
+export interface Label {
+    name: string;
+    isDefault: boolean;
+    languageTag: string;
+}
+  
+export interface IsAvailableTag {
+    isAvailable: boolean;
+}
+  
+export class Term {
+    id: string;
+    isDeprecated: boolean;
+    childrenCount: number;
+    createdDateTime: string;
+    lastModifiedDateTime: string;
+    setId: string;
+    labels: Label[];
+    descriptions: any[];
+    isAvailableForTagging: IsAvailableTag[];
+}
+  
+export interface TermSetResponse {
+    "@odata.context": string;
+    value: Term[];
+}

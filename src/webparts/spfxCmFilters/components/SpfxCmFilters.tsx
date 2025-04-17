@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './SpfxCmFilters.module.scss';
 import type { ISpfxCmFiltersProps } from './ISpfxCmFiltersProps';
-import { Globals, Language } from '../Globals';
+import { Globals, Language, TermSetResponse } from '../Globals';
 import { IDropdownOption } from '@fluentui/react';
 import FilterForm from './FilterForm';
 import { SessionController } from '../SessionController';
@@ -11,8 +11,8 @@ const jobTypeListFr: IDropdownOption[] = [];
 const programAreaListEn: IDropdownOption[] = [];
 const programAreaListFr: IDropdownOption[] = [];
 
-const jobTypeCtrl = new SessionController<unknown[]>('gcx-cm-jobTypeList');
-//const ProgramAreaCtrl = new SessionController<unknown[]>('gcx-cm-programAreaList');
+const jobTypeCtrl = new SessionController<TermSetResponse>('gcx-cm-jobTypeList');
+const ProgramAreaCtrl = new SessionController<TermSetResponse>('gcx-cm-programAreaList');
 
 export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> {
   strings = Globals.getStrings();
@@ -42,7 +42,7 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
   }
 
   private fetchData(): void {
-    //const reactHandler = this;
+    const reactHandler = this;
 
     try {
       jobTypeCtrl.fetch(() => 
@@ -50,8 +50,12 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
           method: 'GET',
           headers: { 'Accept': 'application/json;odata=verbose' }
         }).then(res => res.json())
-      ).then((data) => {
-        console.log(data);
+      ).then((data: TermSetResponse) => {
+        data.value.forEach((term) => {
+          jobTypeListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
+          jobTypeListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
+        });
+        reactHandler.setState({jobTypeListEn, jobTypeListFr});
       });
     }
     catch (e) {
@@ -59,27 +63,22 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
     }
 
     try {
-      jobTypeCtrl.fetch(() => 
+      ProgramAreaCtrl.fetch(() => 
         fetch(`/_api/v2.1/termstore/sets/${Globals.getProgramAreaTermSetGuid()}/terms/`, {
           method: 'GET',
           headers: { 'Accept': 'application/json;odata=verbose' }
         }).then(res => res.json())
-      ).then((data) => {
-        console.log(data);
+      ).then((data: TermSetResponse) => {
+        data.value.forEach((term) => {
+          programAreaListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
+          programAreaListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
+        });
+        reactHandler.setState({programAreaListEn, programAreaListFr});
       });
     }
     catch (e) {
       console.error(e);
     }
-    
-    // REMOVE THIS ONCE WE HAVE REAL DATA
-    jobTypeListEn.push({key: '0', text: 'Assignments'});
-    jobTypeListEn.push({key: '1', text: 'Deployments'});
-    jobTypeListEn.push({key: '2', text: 'Mentoring'});
-    jobTypeListEn.push({key: '3', text: 'Secondments'});
-
-    programAreaListEn.push({key: '0', text: 'Administration'});
-    programAreaListEn.push({key: '1', text: 'Information Technology'});
   }
 
   public render(): React.ReactElement<ISpfxCmFiltersProps> {
