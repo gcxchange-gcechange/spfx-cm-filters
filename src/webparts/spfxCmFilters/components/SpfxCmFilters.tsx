@@ -12,7 +12,7 @@ const programAreaListEn: IDropdownOption[] = [];
 const programAreaListFr: IDropdownOption[] = [];
 
 const jobTypeCtrl = new SessionController<TermSetResponse>('gcx-cm-jobTypeList');
-const ProgramAreaCtrl = new SessionController<TermSetResponse>('gcx-cm-programAreaList');
+const programAreaCtrl = new SessionController<TermSetResponse>('gcx-cm-programAreaList');
 
 export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> {
   strings = Globals.getStrings();
@@ -32,54 +32,48 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
 
   public async componentDidMount(): Promise<void>
   {
-    await this.fetchData();
+    const jobTypeResponse = await jobTypeCtrl.fetch(this.getJobTypeTerms);
+    if (jobTypeResponse) {
+      jobTypeResponse.value.forEach((term) => {
+        jobTypeListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
+        jobTypeListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
+      });
+      this.setState({jobTypeListEn, jobTypeListFr});
+    }
+
+    const programAreaResponse = await programAreaCtrl.fetch(this.getProgramAreaTerms);
+    if (programAreaResponse) {
+      programAreaResponse.value.forEach((term) => {
+        programAreaListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
+        programAreaListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
+      });
+      this.setState({programAreaListEn, programAreaListFr});
+    }
   }
 
-  public async componentDidUpdate(prevProps: Readonly<ISpfxCmFiltersProps>, prevState: Readonly<{}>, snapshot?: any): Promise<void> {
+  public async componentDidUpdate(prevProps: Readonly<ISpfxCmFiltersProps>, prevState: Readonly<{}>, snapshot?: unknown): Promise<void> {
     if (prevProps.language !== this.props.language && (this.props.language === Language.English || this.props.language === Language.French)) {
       this.forceUpdate();
     }
   }
 
-  private fetchData(): void {
-    const reactHandler = this;
+  private getJobTypeTerms = async (): Promise<TermSetResponse> => {
+    const response = await fetch(`/_api/v2.1/termstore/sets/${Globals.getJobTypeTermSetGuid()}/terms/`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json;odata=verbose' }
+    });
+  
+    return await response.json();
+  };
 
-    try {
-      jobTypeCtrl.fetch(() => 
-        fetch(`/_api/v2.1/termstore/sets/${Globals.getJobTypeTermSetGuid()}/terms/`, {
-          method: 'GET',
-          headers: { 'Accept': 'application/json;odata=verbose' }
-        }).then(res => res.json())
-      ).then((data: TermSetResponse) => {
-        data.value.forEach((term) => {
-          jobTypeListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
-          jobTypeListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
-        });
-        reactHandler.setState({jobTypeListEn, jobTypeListFr});
-      });
-    }
-    catch (e) {
-      console.error(e);
-    }
-
-    try {
-      ProgramAreaCtrl.fetch(() => 
-        fetch(`/_api/v2.1/termstore/sets/${Globals.getProgramAreaTermSetGuid()}/terms/`, {
-          method: 'GET',
-          headers: { 'Accept': 'application/json;odata=verbose' }
-        }).then(res => res.json())
-      ).then((data: TermSetResponse) => {
-        data.value.forEach((term) => {
-          programAreaListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
-          programAreaListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
-        });
-        reactHandler.setState({programAreaListEn, programAreaListFr});
-      });
-    }
-    catch (e) {
-      console.error(e);
-    }
-  }
+  private getProgramAreaTerms = async (): Promise<TermSetResponse> => {
+    const response = await fetch(`/_api/v2.1/termstore/sets/${Globals.getProgramAreaTermSetGuid()}/terms/`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json;odata=verbose' }
+    });
+  
+    return await response.json();
+  };
 
   public render(): React.ReactElement<ISpfxCmFiltersProps> {
     const {

@@ -2,7 +2,6 @@
 
 .spfxCmFilters {
   overflow: hidden;
-  padding: 1em;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
   &.teams {
@@ -39,6 +38,11 @@
   .label {
     align-items: center;
     justify-content: space-between;
+
+    b {
+      font-weight: 500;
+      font-size: 14px;
+    }
   }
 
   .controls {
@@ -50,12 +54,6 @@
 
   .iconBtn {
     background-color: transparent;
-  }
-
-  .datePicker {
-    .ms-TextField-fieldGroup {
-      border-color: red;
-    }
   }
 
   @media (max-width: 900px) {
