@@ -13,6 +13,7 @@ import * as strings from 'SpfxCmFiltersWebPartStrings';
 import SpfxCmFilters from './components/SpfxCmFilters';
 import { ISpfxCmFiltersProps } from './components/ISpfxCmFiltersProps';
 import { Globals, Language } from './Globals';
+import { FilterSessionKeys } from './components/FilterForm';
 
 export interface ISpfxCmFiltersWebPartProps {
   language: string;
@@ -104,6 +105,10 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
   }
 
   protected onDispose(): void {
+    sessionStorage.removeItem(FilterSessionKeys.JobType);
+    sessionStorage.removeItem(FilterSessionKeys.ProgramArea);
+    sessionStorage.removeItem(FilterSessionKeys.ApplicationDeadline);
+
     ReactDom.unmountComponentAtNode(this.domElement);
   }
 
