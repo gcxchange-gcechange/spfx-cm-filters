@@ -1,4 +1,4 @@
-import { DatePicker, DefaultButton, Dropdown, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IStyleFunctionOrObject, PrimaryButton, Stack } from "@fluentui/react";
+import { DatePicker, DefaultButton, Dropdown, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IStyleFunctionOrObject, PrimaryButton, Stack } from "@fluentui/react";
 import * as React from "react";
 import { Globals, Language } from "../Globals";
 import styles from './SpfxCmFilters.module.scss';
@@ -22,6 +22,11 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   const [selectedJobTypes, setSelectedJobTypes] = React.useState<string[]>([]);
   const [selectedProgramAreas, setSelectedProgramAreas] = React.useState<string[]>([]);
   const [applicationDeadline, setApplicationDeadline] = React.useState('');
+  const [disableApply, setDisableApply] = React.useState(true);
+
+  let appliedJobTypes: string[] = [];
+  let appliedProgramAreas: string[] = [];
+  let appliedApplicationDeadline: string = '';
 
   const SetSessionKeys = (): void => {
     const jobTypes = selectedJobTypes.join(',');
@@ -30,6 +35,11 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     sessionStorage.setItem(FilterSessionKeys.JobType, jobTypes === undefined ? '' : jobTypes);
     sessionStorage.setItem(FilterSessionKeys.ProgramArea, programAreas === undefined ? '' : programAreas);
     sessionStorage.setItem(FilterSessionKeys.ApplicationDeadline, applicationDeadline);
+
+    appliedJobTypes = [...selectedJobTypes];
+    appliedProgramAreas = [...selectedProgramAreas];
+    appliedApplicationDeadline = applicationDeadline;
+    setDisableApply(true);
 
     if (Globals.isDebugMode()) {
       console.log('\njobType: ' + jobTypes);
@@ -52,8 +62,13 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   }
 
   React.useEffect(() => {
-    const allCleared = selectedJobTypes.length === 0 && selectedProgramAreas.length === 0 && applicationDeadline === '';
+    const isMatchJobType = selectedJobTypes.every((val, index) => val === appliedJobTypes[index]);
+    const isMatchProgramArea = selectedProgramAreas.every((val, index) => val === appliedProgramAreas[index]);
+    const isMatchDeadline = applicationDeadline === appliedApplicationDeadline
+    
+    setDisableApply(isMatchJobType && isMatchProgramArea && isMatchDeadline);
 
+    const allCleared = selectedJobTypes.length === 0 && selectedProgramAreas.length === 0 && applicationDeadline === '';
     if (allCleared) {
       SetSessionKeys();
     }
@@ -78,18 +93,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             <label id='gcx-filter-jobType-label'>
               <b>{strings.jobType}</b>
             </label>
-            <IconButton
-              title={strings.clear}
-              aria-labelledby='gcx-filter-jobType-label'
-              aria-label={strings.clear}
-              className={styles.iconBtn}
-              disabled={selectedJobTypes.length === 0}
-              onClick={() => {
-                setSelectedJobTypes([]);
-              }}
-            >
-              <Icon iconName={'ClearFilter'} />
-            </IconButton>
           </Stack>
           <Dropdown 
             id='ddJobTypeFilter' 
@@ -116,18 +119,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             <label id='gcx-filter-applicationDeadline-label'>
               <b>{strings.applicationDeadline}</b>
             </label>
-            <IconButton
-              title={strings.clear}
-              aria-labelledby='gcx-filter-applicationDeadline-label'
-              aria-label={strings.clear}
-              className={styles.iconBtn}
-              disabled={applicationDeadline === ''}
-              onClick={() => {
-                setApplicationDeadline('');
-              }}
-            >
-              <Icon iconName={'ClearFilter'} />
-            </IconButton>
           </Stack>
           <DatePicker
             styles={datePickerStyles}
@@ -146,18 +137,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             <label id='gcx-filter-programArea-label'>
               <b>{strings.programArea}</b>
             </label>
-            <IconButton
-              title={strings.clear}
-              className={styles.iconBtn}
-              aria-labelledby='gcx-filter-programArea-label'
-              aria-label={strings.clear}
-              disabled={selectedProgramAreas.length === 0}
-              onClick={() => {
-                setSelectedProgramAreas([]);
-              }}
-            >
-              <Icon iconName={'ClearFilter'} />
-            </IconButton>
           </Stack>
           <Dropdown 
             id='ddProgramAreaFilter' 
@@ -198,6 +177,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           id='gcx-cm-filter-apply'
           aria-labelledby='gcx-cm-filter-title'
           aria-label={strings.apply}
+          disabled={disableApply}
           onClick={() => {
             SetSessionKeys();
           }}

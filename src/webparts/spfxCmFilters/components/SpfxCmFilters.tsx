@@ -1,18 +1,19 @@
 import * as React from 'react';
 import styles from './SpfxCmFilters.module.scss';
 import type { ISpfxCmFiltersProps } from './ISpfxCmFiltersProps';
-import { Globals, Language, TermSetErrorResponse, TermSetResponse } from '../Globals';
+import { Globals, Language } from '../Globals';
 import { IDropdownOption } from '@fluentui/react';
 import FilterForm from './FilterForm';
 import { SessionController } from '../SessionController';
+import { TermSet, TermSetError } from '../interfaces/ITermSet';
 
 const jobTypeListEn: IDropdownOption[] = [];
 const jobTypeListFr: IDropdownOption[] = [];
 const programAreaListEn: IDropdownOption[] = [];
 const programAreaListFr: IDropdownOption[] = [];
 
-const jobTypeCtrl = new SessionController<TermSetResponse | TermSetErrorResponse>('gcx-cm-jobTypeList');
-const programAreaCtrl = new SessionController<TermSetResponse | TermSetErrorResponse>('gcx-cm-programAreaList');
+const jobTypeCtrl = new SessionController<TermSet | TermSetError>('gcx-cm-jobTypeList');
+const programAreaCtrl = new SessionController<TermSet | TermSetError>('gcx-cm-programAreaList');
 
 export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> {
   strings = Globals.getStrings();
@@ -34,26 +35,34 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
   {
         
     const jobTypeResponse = await jobTypeCtrl.fetch(this.getJobTypeTerms);
-    if (jobTypeResponse && !(jobTypeResponse as TermSetErrorResponse).error) {
+    if (jobTypeResponse && !(jobTypeResponse as TermSetError).error) {
       jobTypeListEn.length = 0;
       jobTypeListFr.length = 0;
       
-      (jobTypeResponse as TermSetResponse).value.forEach((term) => {
-        jobTypeListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
-        jobTypeListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
+      (jobTypeResponse as TermSet).value.forEach((term) => {
+        if (!term.isDeprecated) {
+          jobTypeListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
+          jobTypeListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
+        } else if (Globals.isDebugMode() ) {
+          console.log('The following term is deprecated and will not be added to the JobType list:', term);
+        }
       });
 
       this.setState({jobTypeListEn, jobTypeListFr});
     }
 
     const programAreaResponse = await programAreaCtrl.fetch(this.getProgramAreaTerms);
-    if (programAreaResponse && !(programAreaResponse as TermSetErrorResponse).error) {
+    if (programAreaResponse && !(programAreaResponse as TermSetError).error) {
       programAreaListEn.length = 0;
       programAreaListFr.length = 0;
 
-      (programAreaResponse as TermSetResponse).value.forEach((term) => {
-        programAreaListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
-        programAreaListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
+      (programAreaResponse as TermSet).value.forEach((term) => {
+        if (!term.isDeprecated) {
+          programAreaListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
+          programAreaListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
+        } else if (Globals.isDebugMode() ) {
+          console.log('The following term is deprecated and will not be added to the ProgramArea list:', term);
+        }
       });
 
       this.setState({programAreaListEn, programAreaListFr});
@@ -66,7 +75,7 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
     }
   }
 
-  private getJobTypeTerms = async (): Promise<TermSetResponse> => {
+  private getJobTypeTerms = async (): Promise<TermSet> => {
     const response = await fetch(`/_api/v2.1/termstore/sets/${Globals.getJobTypeTermSetGuid()}/terms/`, {
       method: 'GET',
       headers: { 'Accept': 'application/json;odata=verbose' }
@@ -75,7 +84,7 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
     return await response.json();
   };
 
-  private getProgramAreaTerms = async (): Promise<TermSetResponse> => {
+  private getProgramAreaTerms = async (): Promise<TermSet> => {
     const response = await fetch(`/_api/v2.1/termstore/sets/${Globals.getProgramAreaTermSetGuid()}/terms/`, {
       method: 'GET',
       headers: { 'Accept': 'application/json;odata=verbose' }

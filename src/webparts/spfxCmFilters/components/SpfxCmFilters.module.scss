@@ -11,7 +11,6 @@
   .filtersHeader {
     display: flex;
     align-items: center;
-    //padding-bottom: 20px;
     gap: 10px;
 
     h2 {
@@ -36,8 +35,7 @@
   }
 
   .label {
-    align-items: center;
-    justify-content: space-between;
+    padding-bottom: 6px;
 
     b {
       font-weight: 500;
@@ -52,10 +50,6 @@
     margin-top: 10px;
   }
 
-  .iconBtn {
-    background-color: transparent;
-  }
-
   @media (max-width: 900px) {
     .filterRow {
       gap: 10px;
@@ -64,6 +58,12 @@
 
     .controls {
       margin-top: 20px;
+    }
+  }
+
+  @media (max-width: 550px) {
+    .controls {
+      flex-flow: column;
     }
   }
 }
