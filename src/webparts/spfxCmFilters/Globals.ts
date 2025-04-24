@@ -75,17 +75,17 @@ export class Globals {
     }
 }
 
-export interface Label {
+interface Label {
     name: string;
     isDefault: boolean;
     languageTag: string;
 }
   
-export interface IsAvailableTag {
+interface IsAvailableTag {
     isAvailable: boolean;
 }
   
-export class Term {
+class Term {
     id: string;
     isDeprecated: boolean;
     childrenCount: number;
@@ -100,4 +100,13 @@ export class Term {
 export interface TermSetResponse {
     "@odata.context": string;
     value: Term[];
+}
+
+interface TermSetError {
+    code: string;
+    message: string;
+}
+
+export interface TermSetErrorResponse {
+    error: TermSetError;
 }

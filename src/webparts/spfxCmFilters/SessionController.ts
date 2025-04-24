@@ -1,4 +1,4 @@
-import { Globals } from "./Globals";
+import { Globals, TermSetErrorResponse } from "./Globals";
 
 export class SessionController<T> {
     private storageKey: string;
@@ -13,6 +13,16 @@ export class SessionController<T> {
 
     public save(data: T): void {
         try {
+            if ((data as unknown as TermSetErrorResponse).error) {
+
+                if (Globals.isDebugMode()) {
+                    console.log('An error was returned when retrieving data, and will not be saved to local stroage.');
+                    console.log(data);
+                }
+
+                return;
+            }
+
             const item = {
                 value: data,
                 timestamp: this.getTimestamp()
@@ -35,6 +45,7 @@ export class SessionController<T> {
 
         if (item) {
             const parsedItem = JSON.parse(item);
+
             if (this.getTimestamp() - parsedItem.timestamp < (Globals.getCacheTime() * 60 * 1000)) {
 
                 if (Globals.isDebugMode()) {

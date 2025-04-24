@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styles from './SpfxCmFilters.module.scss';
 import type { ISpfxCmFiltersProps } from './ISpfxCmFiltersProps';
-import { Globals, Language, TermSetResponse } from '../Globals';
+import { Globals, Language, TermSetErrorResponse, TermSetResponse } from '../Globals';
 import { IDropdownOption } from '@fluentui/react';
-import FilterForm, { FilterSessionKeys } from './FilterForm';
+import FilterForm from './FilterForm';
 import { SessionController } from '../SessionController';
 
 const jobTypeListEn: IDropdownOption[] = [];
@@ -11,8 +11,8 @@ const jobTypeListFr: IDropdownOption[] = [];
 const programAreaListEn: IDropdownOption[] = [];
 const programAreaListFr: IDropdownOption[] = [];
 
-const jobTypeCtrl = new SessionController<TermSetResponse>('gcx-cm-jobTypeList');
-const programAreaCtrl = new SessionController<TermSetResponse>('gcx-cm-programAreaList');
+const jobTypeCtrl = new SessionController<TermSetResponse | TermSetErrorResponse>('gcx-cm-jobTypeList');
+const programAreaCtrl = new SessionController<TermSetResponse | TermSetErrorResponse>('gcx-cm-programAreaList');
 
 export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> {
   strings = Globals.getStrings();
@@ -32,16 +32,13 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
 
   public async componentDidMount(): Promise<void>
   {
-    sessionStorage.removeItem(FilterSessionKeys.JobType);
-    sessionStorage.removeItem(FilterSessionKeys.ProgramArea);
-    sessionStorage.removeItem(FilterSessionKeys.ApplicationDeadline);
         
     const jobTypeResponse = await jobTypeCtrl.fetch(this.getJobTypeTerms);
-    if (jobTypeResponse) {
+    if (jobTypeResponse && !(jobTypeResponse as TermSetErrorResponse).error) {
       jobTypeListEn.length = 0;
       jobTypeListFr.length = 0;
       
-      jobTypeResponse.value.forEach((term) => {
+      (jobTypeResponse as TermSetResponse).value.forEach((term) => {
         jobTypeListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
         jobTypeListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
       });
@@ -50,11 +47,11 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
     }
 
     const programAreaResponse = await programAreaCtrl.fetch(this.getProgramAreaTerms);
-    if (programAreaResponse) {
+    if (programAreaResponse && !(programAreaResponse as TermSetErrorResponse).error) {
       programAreaListEn.length = 0;
       programAreaListFr.length = 0;
 
-      programAreaResponse.value.forEach((term) => {
+      (programAreaResponse as TermSetResponse).value.forEach((term) => {
         programAreaListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
         programAreaListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
       });

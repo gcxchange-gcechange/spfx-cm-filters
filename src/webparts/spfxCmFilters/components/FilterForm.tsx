@@ -52,16 +52,18 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   }
 
   React.useEffect(() => {
-    SetSessionKeys();
-  }, [selectedJobTypes, selectedProgramAreas, applicationDeadline]);
+    const allCleared = selectedJobTypes.length === 0 && selectedProgramAreas.length === 0 && applicationDeadline === '';
 
-  SetSessionKeys();
+    if (allCleared) {
+      SetSessionKeys();
+    }
+  }, [selectedJobTypes, selectedProgramAreas, applicationDeadline]);
 
   const borderColor: string = '#c2c2c2';
   const datePickerStyles: IStyleFunctionOrObject<IDatePickerStyleProps, IDatePickerStyles> = {
     textField: {
       '& .ms-TextField-fieldGroup': {
-      borderColor: borderColor
+        borderColor: borderColor
       },
     }
   };
@@ -93,6 +95,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             id='ddJobTypeFilter' 
             aria-labelledby='gcx-filter-jobType-label'
             styles={{title: { borderColor: borderColor }}} 
+            placeholder={strings.optionPlaceholder}
             options={Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn} 
             onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
               if (!option) return;
@@ -128,6 +131,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           </Stack>
           <DatePicker
             styles={datePickerStyles}
+            placeholder={strings.datePlaceholder}
             onSelectDate={(date: Date) => {
               setApplicationDeadline(`${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}`);
             }}
@@ -159,6 +163,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             id='ddProgramAreaFilter' 
             aria-labelledby='gcx-filter-programArea-label'
             styles={{title: { borderColor: borderColor }}} 
+            placeholder={strings.optionPlaceholder}
             options={Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn} 
             onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
               if (!option) return;
@@ -193,6 +198,9 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           id='gcx-cm-filter-apply'
           aria-labelledby='gcx-cm-filter-title'
           aria-label={strings.apply}
+          onClick={() => {
+            SetSessionKeys();
+          }}
         >
           {strings.apply}
         </PrimaryButton>

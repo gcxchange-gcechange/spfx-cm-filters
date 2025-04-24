@@ -15,10 +15,12 @@ define([], function() {
     "Filters": "Filters",
     "btnExpanderOpen": "Click to expand Filters",
     "btnExpanderClosed": "Click to minimize Filters",
-    "clear": "Clear",
+    "clear": "Clear Filters",
     "jobType": "Job Type",
     "programArea": "Program Area",
     "applicationDeadline": "Application Deadline",
-    "apply": "Apply",
+    "apply": "Apply Filters",
+    "optionPlaceholder": "Choose one or more",
+    "datePlaceholder": "Choose a date"
   }
 });

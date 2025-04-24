@@ -19,6 +19,8 @@ declare interface ISpfxCmFiltersWebPartStrings {
   programArea: string;
   applicationDeadline: string;
   apply: string;
+  optionPlaceholder: string;
+  datePlaceholder: string;
 }
 
 declare module 'SpfxCmFiltersWebPartStrings' {
