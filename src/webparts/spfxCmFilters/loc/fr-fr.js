@@ -20,7 +20,9 @@ define([], function() {
     "programArea": "Domaines de programme",
     "applicationDeadline": "Date limite de candidature",
     "apply": "Appliquer des filtres",
-    "optionPlaceholder": "Choisissez-en un ou plusieurs",
-    "datePlaceholder": "Choisissez une date"
+    "optionPlaceholder": "--Choisissez-en un ou plusieurs--",
+    "datePlaceholder": "--Choisissez une date--",
+    "remove": "Retirer",
+    "selectedFilters": "Filtres sélectionnés"
   }
 });

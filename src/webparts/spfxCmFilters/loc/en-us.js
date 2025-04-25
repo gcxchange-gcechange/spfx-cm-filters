@@ -20,7 +20,9 @@ define([], function() {
     "programArea": "Program Area",
     "applicationDeadline": "Application Deadline",
     "apply": "Apply Filters",
-    "optionPlaceholder": "Choose one or more",
-    "datePlaceholder": "Choose a date"
+    "optionPlaceholder": "--Choose one or more--",
+    "datePlaceholder": "--Choose a date--",
+    "remove": "Remove",
+    "selectedFilters": "Selected Filters"
   }
 });

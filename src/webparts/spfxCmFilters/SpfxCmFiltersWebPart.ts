@@ -172,13 +172,13 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
         Globals.setLanguage(newValue);
         break;
       case 'debug':
-        Globals.setDebugMode(newValue)
+        Globals.setDebugMode(newValue);
         break;
       case 'cacheTime':
-        Globals.setCacheTime(newValue)
+        Globals.setCacheTime(newValue);
         break;
       case 'jobTypeTermSetGuid':
-        Globals.setJobTypeTermSetGuid(newValue)
+        Globals.setJobTypeTermSetGuid(newValue);
         break;
       case 'programAreaTermSetGuid':
         Globals.setProgramAreaTermSetGuid(newValue);

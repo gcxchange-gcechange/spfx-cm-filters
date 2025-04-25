@@ -17,13 +17,6 @@ const programAreaCtrl = new SessionController<TermSet | TermSetError>('gcx-cm-pr
 
 export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> {
   strings = Globals.getStrings();
-  buttonStyle = {
-    fontSize: '16px',
-    minWidth: '25px',
-    minHeight: '25px',
-    border: '0',
-    color: 'black'
-  };
 
   public constructor(props: ISpfxCmFiltersProps, state: ISpfxCmFiltersProps){ 
     super(props); 
@@ -33,7 +26,6 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
 
   public async componentDidMount(): Promise<void>
   {
-        
     const jobTypeResponse = await jobTypeCtrl.fetch(this.getJobTypeTerms);
     if (jobTypeResponse && !(jobTypeResponse as TermSetError).error) {
       jobTypeListEn.length = 0;

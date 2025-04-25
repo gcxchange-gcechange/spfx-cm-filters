@@ -21,6 +21,8 @@ declare interface ISpfxCmFiltersWebPartStrings {
   apply: string;
   optionPlaceholder: string;
   datePlaceholder: string;
+  remove: string;
+  selectedFilters: string;
 }
 
 declare module 'SpfxCmFiltersWebPartStrings' {

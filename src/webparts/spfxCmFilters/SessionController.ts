@@ -29,10 +29,8 @@ export class SessionController<T> {
       
       localStorage.setItem(this.storageKey, JSON.stringify(item));
       
-      if (Globals.isDebugMode()) {
-        console.log(`Saved data to local storage with key: ${this.storageKey}`);
-        console.log(item);
-      }
+      if (Globals.isDebugMode())
+        console.log(`Saved data to local storage with key: ${this.storageKey}`, item);
     }
     catch (e) {
       console.error(e);

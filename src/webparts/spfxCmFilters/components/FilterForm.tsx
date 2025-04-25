@@ -1,4 +1,4 @@
-import { DatePicker, DefaultButton, Dropdown, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IStyleFunctionOrObject, PrimaryButton, Stack } from "@fluentui/react";
+import { DatePicker, DefaultButton, Dropdown, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IStyleFunctionOrObject, PrimaryButton, Stack } from "@fluentui/react";
 import * as React from "react";
 import { Globals, Language } from "../Globals";
 import styles from './SpfxCmFilters.module.scss';
@@ -61,6 +61,57 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     ClearSessionKeys();
   }
 
+  const TermChipList = (originalList: IDropdownOption[], selectedTerms: string[], updateFunc: Function, labeledBy: string): JSX.Element => {
+    const chips = originalList.filter(term1 =>
+      selectedTerms.some(term2 => term2 === term1.key)
+    );
+
+    return chips.length > 0 ? (
+      <div className={styles.chipContainer}>
+        <h3>{strings.selectedFilters}</h3>
+        {chips.map((term, index) => (
+          <div className={styles.chip}>
+            <span>{term.text}</span>
+            <IconButton
+              aria-labelledby={labeledBy}
+              aria-label={`${strings.remove} ${term.text}`}
+              title={`${strings.remove} ${term.text}`}
+              onClick={() => {
+                const updatedList = selectedTerms.filter(
+                  item => item !== term.key
+                );
+                updateFunc(updatedList);
+              }}
+            >
+              <Icon iconName='ChromeClose' />
+            </IconButton>
+          </div>
+        ))}
+      </div>
+    ) : <></>;
+  }
+
+  const DateChip = () => {
+    return applicationDeadline ? (
+      <div className={styles.chipContainer}>
+        <h3>{strings.selectedFilters}</h3>
+          <div className={styles.chip}>
+            <span>{applicationDeadline}</span>
+            <IconButton
+              aria-labelledby='gcx-filter-applicationDeadline-label'
+              aria-label={`${strings.remove} ${applicationDeadline}`}
+              title={`${strings.remove} ${applicationDeadline}`}
+              onClick={() => {
+                setApplicationDeadline('');
+              }}
+            >
+              <Icon iconName='ChromeClose' />
+            </IconButton>
+          </div>
+      </div>
+    ) : <></>;
+  }
+
   React.useEffect(() => {
     const isMatchJobType = selectedJobTypes.every((val, index) => val === appliedJobTypes[index]);
     const isMatchProgramArea = selectedProgramAreas.every((val, index) => val === appliedProgramAreas[index]);
@@ -112,6 +163,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             selectedKeys={selectedJobTypes}
             multiSelect={true}
           />
+          {TermChipList(Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn, selectedJobTypes, setSelectedJobTypes, 'gcx-filter-jobType-label')}
         </Stack>
 
         <Stack className={styles.filter}>
@@ -124,12 +176,14 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             styles={datePickerStyles}
             placeholder={strings.datePlaceholder}
             onSelectDate={(date: Date) => {
+              // The format of this date is important
               setApplicationDeadline(`${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}`);
             }}
             value={applicationDeadline ? new Date(applicationDeadline) : undefined}
             minDate={new Date()} 
             highlightSelectedMonth={true}
           />
+          {DateChip()}
         </Stack>
   
         <Stack className={styles.filter}>
@@ -156,6 +210,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             selectedKeys={selectedProgramAreas}
             multiSelect={true}
           />
+          {TermChipList(Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn, selectedProgramAreas, setSelectedProgramAreas, 'gcx-filter-programArea-label')}
         </Stack>
 
       </Stack>
@@ -185,7 +240,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           {strings.apply}
         </PrimaryButton>
       </Stack>
-      
     </div>
     </>
   );

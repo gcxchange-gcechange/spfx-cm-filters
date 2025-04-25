@@ -43,6 +43,43 @@
     }
   }
 
+  .chipContainer {
+    padding-top: 3px;
+
+    h3 {
+      margin: 10px 0;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .chip {
+      display: inline-block;
+      width: fit-content;
+      padding: 0 0 0 10px;
+      margin: 2px 2px;
+      background-color: #0078d4;
+      border-radius: 20px;
+
+      span {
+        color: white;
+        pointer-events: none;
+        font-size: 12px;
+      }
+
+      button {
+        background: transparent;
+  
+        span {
+          font-size: 8px;
+        }
+      }
+  
+      button:hover {
+        background: transparent;
+      }
+    }
+  }
+
   .controls {
     justify-content: flex-end;
     flex-flow: row;
