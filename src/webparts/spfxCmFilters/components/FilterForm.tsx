@@ -1,4 +1,4 @@
-import { DatePicker, DefaultButton, Dropdown, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IStyleFunctionOrObject, PrimaryButton, Stack } from "@fluentui/react";
+import { DatePicker, DefaultButton, Dropdown, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IStyleFunctionOrObject, PrimaryButton, Stack, useTheme } from "@fluentui/react";
 import * as React from "react";
 import { Globals, Language } from "../Globals";
 import styles from './SpfxCmFilters.module.scss';
@@ -17,6 +17,7 @@ export enum FilterSessionKeys {
 }
 
 const FilterForm = (props: ISearchFormProps): JSX.Element => {
+  const theme = useTheme();
   const strings = Globals.getStrings();
 
   const [selectedJobTypes, setSelectedJobTypes] = React.useState<string[]>([]);
@@ -27,6 +28,10 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   let appliedJobTypes: string[] = [];
   let appliedProgramAreas: string[] = [];
   let appliedApplicationDeadline: string = '';
+
+  const chipColor = {
+    backgroundColor: theme.palette.themePrimary
+  };
 
   const SetSessionKeys = (): void => {
     const jobTypes = selectedJobTypes.join(',');
@@ -68,9 +73,11 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
 
     return chips.length > 0 ? (
       <div className={styles.chipContainer}>
-        <h3>{strings.selectedFilters}</h3>
+        <label aria-labelledby={labeledBy}>
+          {strings.selectedFilters}
+        </label>
         {chips.map((term, index) => (
-          <div className={styles.chip}>
+          <div className={styles.chip} style={chipColor}>
             <span>{term.text}</span>
             <IconButton
               aria-labelledby={labeledBy}
@@ -94,8 +101,10 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   const DateChip = () => {
     return applicationDeadline ? (
       <div className={styles.chipContainer}>
-        <h3>{strings.selectedFilters}</h3>
-          <div className={styles.chip}>
+        <label aria-labelledby='gcx-filter-applicationDeadline-label'>
+          {strings.selectedFilters}
+        </label>
+          <div className={styles.chip} style={chipColor}>
             <span>{applicationDeadline}</span>
             <IconButton
               aria-labelledby='gcx-filter-applicationDeadline-label'
