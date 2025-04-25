@@ -25,9 +25,9 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   const [applicationDeadline, setApplicationDeadline] = React.useState('');
   const [disableApply, setDisableApply] = React.useState(true);
 
-  let appliedJobTypes: string[] = [];
-  let appliedProgramAreas: string[] = [];
-  let appliedApplicationDeadline: string = '';
+  const appliedJobTypes = React.useRef<string[]>([]);
+  const appliedProgramAreas = React.useRef<string[]>([]);
+  const appliedApplicationDeadline = React.useRef<string>('');
 
   const chipColor = {
     backgroundColor: theme.palette.themePrimary
@@ -41,9 +41,10 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     sessionStorage.setItem(FilterSessionKeys.ProgramArea, programAreas === undefined ? '' : programAreas);
     sessionStorage.setItem(FilterSessionKeys.ApplicationDeadline, applicationDeadline);
 
-    appliedJobTypes = [...selectedJobTypes];
-    appliedProgramAreas = [...selectedProgramAreas];
-    appliedApplicationDeadline = applicationDeadline;
+    appliedJobTypes.current = [...selectedJobTypes];
+    appliedProgramAreas.current = [...selectedProgramAreas];
+    appliedApplicationDeadline.current = applicationDeadline;
+
     setDisableApply(true);
 
     if (Globals.isDebugMode()) {
@@ -65,6 +66,25 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     setApplicationDeadline(''); 
     ClearSessionKeys();
   }
+
+  React.useEffect(() => {
+    const isMatchJobType = selectedJobTypes.length === appliedJobTypes.current.length &&
+      selectedJobTypes.every(val => appliedJobTypes.current.indexOf(val) !== -1)
+  
+    const isMatchProgramArea = selectedProgramAreas.length === appliedProgramAreas.current.length &&
+      selectedProgramAreas.every(val => appliedProgramAreas.current.indexOf(val) !== -1)
+
+    const isMatchDeadline = applicationDeadline === appliedApplicationDeadline.current;
+
+    const selectedMatchesApplied = isMatchJobType && isMatchProgramArea && isMatchDeadline;
+    
+    setDisableApply(selectedMatchesApplied);
+
+    const allCleared = selectedJobTypes.length === 0 && selectedProgramAreas.length === 0 && applicationDeadline === '';
+    if (allCleared && selectedMatchesApplied) {
+      SetSessionKeys();
+    }
+  }, [selectedJobTypes, selectedProgramAreas, applicationDeadline]);
 
   const TermChipList = (originalList: IDropdownOption[], selectedTerms: string[], updateFunc: Function, labeledBy: string): JSX.Element => {
     const chips = originalList.filter(term1 =>
@@ -88,6 +108,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                   item => item !== term.key
                 );
                 updateFunc(updatedList);
+                setDisableApply(false);
               }}
             >
               <Icon iconName='ChromeClose' />
@@ -112,6 +133,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
               title={`${strings.remove} ${applicationDeadline}`}
               onClick={() => {
                 setApplicationDeadline('');
+                setDisableApply(false);
               }}
             >
               <Icon iconName='ChromeClose' />
@@ -120,19 +142,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
       </div>
     ) : <></>;
   }
-
-  React.useEffect(() => {
-    const isMatchJobType = selectedJobTypes.every((val, index) => val === appliedJobTypes[index]);
-    const isMatchProgramArea = selectedProgramAreas.every((val, index) => val === appliedProgramAreas[index]);
-    const isMatchDeadline = applicationDeadline === appliedApplicationDeadline
-    
-    setDisableApply(isMatchJobType && isMatchProgramArea && isMatchDeadline);
-
-    const allCleared = selectedJobTypes.length === 0 && selectedProgramAreas.length === 0 && applicationDeadline === '';
-    if (allCleared) {
-      SetSessionKeys();
-    }
-  }, [selectedJobTypes, selectedProgramAreas, applicationDeadline]);
 
   const borderColor: string = '#c2c2c2';
   const datePickerStyles: IStyleFunctionOrObject<IDatePickerStyleProps, IDatePickerStyles> = {
