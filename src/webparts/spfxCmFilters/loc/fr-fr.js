@@ -23,6 +23,7 @@ define([], function() {
     "optionPlaceholder": "--Choisissez-en un ou plusieurs--",
     "datePlaceholder": "--Choisissez une date--",
     "remove": "Retirer",
-    "selectedFilters": "Filtres sélectionnés"
+    "selectedJobTypes": "Types d'emplois sélectionnés",
+    "selectedProgramAreas": "Domaines de programme sélectionnés"
   }
 });

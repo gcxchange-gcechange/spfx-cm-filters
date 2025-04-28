@@ -22,7 +22,8 @@ declare interface ISpfxCmFiltersWebPartStrings {
   optionPlaceholder: string;
   datePlaceholder: string;
   remove: string;
-  selectedFilters: string;
+  selectedJobTypes: string;
+  selectedProgramAreas: string;
 }
 
 declare module 'SpfxCmFiltersWebPartStrings' {

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import { DatePicker, DefaultButton, Dropdown, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IStyleFunctionOrObject, PrimaryButton, Stack, useTheme } from "@fluentui/react";
 import * as React from "react";
 import { Globals, Language } from "../Globals";
@@ -30,7 +31,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   const appliedApplicationDeadline = React.useRef<string>('');
 
   const chipColor = {
-    backgroundColor: theme.palette.themePrimary
+    backgroundColor: theme.palette.themeSecondary
   };
 
   const SetSessionKeys = (): void => {
@@ -54,17 +55,14 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     }
   }
 
-  const ClearSessionKeys = (): void => {
-    sessionStorage.removeItem(FilterSessionKeys.JobType);
-    sessionStorage.removeItem(FilterSessionKeys.ProgramArea);
-    sessionStorage.removeItem(FilterSessionKeys.ApplicationDeadline);
-  }
-
   const ClearValues = (): void => {
+    appliedJobTypes.current = [];
+    appliedProgramAreas.current = [];
+    appliedApplicationDeadline.current = '';
+
     setSelectedJobTypes([]);
     setSelectedProgramAreas([]);
     setApplicationDeadline(''); 
-    ClearSessionKeys();
   }
 
   React.useEffect(() => {
@@ -86,7 +84,8 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     }
   }, [selectedJobTypes, selectedProgramAreas, applicationDeadline]);
 
-  const TermChipList = (originalList: IDropdownOption[], selectedTerms: string[], updateFunc: Function, labeledBy: string): JSX.Element => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  const TermChipList = (originalList: IDropdownOption[], selectedTerms: string[], updateFunc: Function, label: string, labeledBy: string): JSX.Element => {
     const chips = originalList.filter(term1 =>
       selectedTerms.some(term2 => term2 === term1.key)
     );
@@ -94,7 +93,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     return chips.length > 0 ? (
       <div className={styles.chipContainer}>
         <label aria-labelledby={labeledBy}>
-          {strings.selectedFilters}
+          {label}
         </label>
         {chips.map((term, index) => (
           <div className={styles.chip} style={chipColor}>
@@ -115,30 +114,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             </IconButton>
           </div>
         ))}
-      </div>
-    ) : <></>;
-  }
-
-  const DateChip = () => {
-    return applicationDeadline ? (
-      <div className={styles.chipContainer}>
-        <label aria-labelledby='gcx-filter-applicationDeadline-label'>
-          {strings.selectedFilters}
-        </label>
-          <div className={styles.chip} style={chipColor}>
-            <span>{applicationDeadline}</span>
-            <IconButton
-              aria-labelledby='gcx-filter-applicationDeadline-label'
-              aria-label={`${strings.remove} ${applicationDeadline}`}
-              title={`${strings.remove} ${applicationDeadline}`}
-              onClick={() => {
-                setApplicationDeadline('');
-                setDisableApply(false);
-              }}
-            >
-              <Icon iconName='ChromeClose' />
-            </IconButton>
-          </div>
       </div>
     ) : <></>;
   }
@@ -181,27 +156,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             selectedKeys={selectedJobTypes}
             multiSelect={true}
           />
-          {TermChipList(Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn, selectedJobTypes, setSelectedJobTypes, 'gcx-filter-jobType-label')}
-        </Stack>
-
-        <Stack className={styles.filter}>
-          <Stack horizontal className={styles.label}>
-            <label id='gcx-filter-applicationDeadline-label'>
-              <b>{strings.applicationDeadline}</b>
-            </label>
-          </Stack>
-          <DatePicker
-            styles={datePickerStyles}
-            placeholder={strings.datePlaceholder}
-            onSelectDate={(date: Date) => {
-              // The format of this date is important
-              setApplicationDeadline(`${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}`);
-            }}
-            value={applicationDeadline ? new Date(applicationDeadline) : undefined}
-            minDate={new Date()} 
-            highlightSelectedMonth={true}
-          />
-          {DateChip()}
+          {TermChipList(Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn, selectedJobTypes, setSelectedJobTypes, strings.selectedJobTypes, 'gcx-filter-jobType-label')}
         </Stack>
   
         <Stack className={styles.filter}>
@@ -228,7 +183,26 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             selectedKeys={selectedProgramAreas}
             multiSelect={true}
           />
-          {TermChipList(Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn, selectedProgramAreas, setSelectedProgramAreas, 'gcx-filter-programArea-label')}
+          {TermChipList(Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn, selectedProgramAreas, setSelectedProgramAreas, strings.selectedProgramAreas, 'gcx-filter-programArea-label')}
+        </Stack>
+
+        <Stack className={styles.filter}>
+          <Stack horizontal className={styles.label}>
+            <label id='gcx-filter-applicationDeadline-label'>
+              <b>{strings.applicationDeadline}</b>
+            </label>
+          </Stack>
+          <DatePicker
+            styles={datePickerStyles}
+            placeholder={strings.datePlaceholder}
+            onSelectDate={(date: Date) => {
+              // The format of this date is important
+              setApplicationDeadline(`${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}`);
+            }}
+            value={applicationDeadline ? new Date(applicationDeadline) : undefined}
+            minDate={new Date()} 
+            highlightSelectedMonth={true}
+          />
         </Stack>
 
       </Stack>
