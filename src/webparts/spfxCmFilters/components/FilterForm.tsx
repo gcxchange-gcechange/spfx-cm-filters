@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import { DatePicker, DefaultButton, Dropdown, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IStyleFunctionOrObject, PrimaryButton, Stack, useTheme } from "@fluentui/react";
+import { DatePicker, DefaultButton, Dropdown, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IStyleFunctionOrObject, PrimaryButton, Stack } from "@fluentui/react";
 import * as React from "react";
 import { Globals, Language } from "../Globals";
 import styles from './SpfxCmFilters.module.scss';
@@ -18,7 +18,6 @@ export enum FilterSessionKeys {
 }
 
 const FilterForm = (props: ISearchFormProps): JSX.Element => {
-  const theme = useTheme();
   const strings = Globals.getStrings();
 
   const [selectedJobTypes, setSelectedJobTypes] = React.useState<string[]>([]);
@@ -29,10 +28,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   const appliedJobTypes = React.useRef<string[]>([]);
   const appliedProgramAreas = React.useRef<string[]>([]);
   const appliedApplicationDeadline = React.useRef<string>('');
-
-  const chipColor = {
-    backgroundColor: theme.palette.themeSecondary
-  };
 
   const SetSessionKeys = (): void => {
     const jobTypes = selectedJobTypes.join(',');
@@ -96,7 +91,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           {label}
         </label>
         {chips.map((term, index) => (
-          <div className={styles.chip} style={chipColor}>
+          <div className={styles.chip}>
             <span>{term.text}</span>
             <IconButton
               aria-labelledby={labeledBy}
