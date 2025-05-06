@@ -124,12 +124,12 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
 
   return (
     <>
-    <div>
+    <form id="gcx-cm-filter-form">
       <Stack className={styles.filterRow}>
 
         <Stack className={styles.filter}>
           <Stack horizontal className={styles.label}>
-            <label id='gcx-filter-jobType-label'>
+            <label id='gcx-filter-jobType-label' htmlFor='ddJobTypeFilter'>
               <b>{strings.jobType}</b>
             </label>
           </Stack>
@@ -156,7 +156,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   
         <Stack className={styles.filter}>
           <Stack horizontal className={styles.label}>
-            <label id='gcx-filter-programArea-label'>
+            <label id='gcx-filter-programArea-label' htmlFor='ddProgramAreaFilter'>
               <b>{strings.programArea}</b>
             </label>
           </Stack>
@@ -183,11 +183,13 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
 
         <Stack className={styles.filter}>
           <Stack horizontal className={styles.label}>
-            <label id='gcx-filter-applicationDeadline-label'>
+            <label id='gcx-filter-applicationDeadline-label' htmlFor='dpApplicationDeadlineDate'>
               <b>{strings.applicationDeadline}</b>
             </label>
           </Stack>
           <DatePicker
+            id='dpApplicationDeadlineDate'
+            aria-labelledby='gcx-filter-applicationDeadline-label'
             styles={datePickerStyles}
             placeholder={strings.datePlaceholder}
             onSelectDate={(date: Date) => {
@@ -227,7 +229,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           {strings.apply}
         </PrimaryButton>
       </Stack>
-    </div>
+    </form>
     </>
   );
 }
