@@ -12,6 +12,7 @@ export interface ISearchFormProps {
 }
 
 export enum FilterSessionKeys {
+  Initialized = 'gcx-cm-filter-init',
   JobType = 'gcx-cm-filter-jobType',
   ProgramArea = 'gcx-cm-filter-programArea',
   ApplicationDeadline = 'gcx-cm-filter-applicationDeadline'
@@ -59,6 +60,17 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     setSelectedProgramAreas([]);
     setApplicationDeadline(''); 
   }
+
+  React.useEffect(() => {
+    sessionStorage.setItem(FilterSessionKeys.Initialized, 'true');
+
+    if (Globals.isDebugMode())
+      console.log(`${FilterSessionKeys.Initialized}: ${sessionStorage.getItem(FilterSessionKeys.Initialized)}`);
+
+    return () => {
+      sessionStorage.removeItem(FilterSessionKeys.Initialized);
+    };
+  }, []);
 
   React.useEffect(() => {
     const isMatchJobType = selectedJobTypes.length === appliedJobTypes.current.length &&

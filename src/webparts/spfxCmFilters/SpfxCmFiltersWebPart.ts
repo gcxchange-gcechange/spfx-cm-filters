@@ -105,6 +105,7 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
   }
 
   protected onDispose(): void {
+    sessionStorage.removeItem(FilterSessionKeys.Initialized);
     sessionStorage.removeItem(FilterSessionKeys.JobType);
     sessionStorage.removeItem(FilterSessionKeys.ProgramArea);
     sessionStorage.removeItem(FilterSessionKeys.ApplicationDeadline);
