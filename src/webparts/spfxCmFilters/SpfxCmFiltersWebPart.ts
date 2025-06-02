@@ -29,6 +29,22 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
   private _environmentMessage: string = '';
 
   public render(): void {
+    // This is duplicated in Advaced Search, so the first one to render will inject the style
+    const styleId = 'global-panel-commands-style';
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement('style');
+      style.id = styleId;
+      style.innerHTML = `
+        .ms-Panel-commands {
+          left: 0;
+        }
+        .ms-Callout-main div[class*="dropdownItemsWrapper-"] {
+          width: auto !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
     const element: React.ReactElement<ISpfxCmFiltersProps> = React.createElement(
       SpfxCmFilters,
       {

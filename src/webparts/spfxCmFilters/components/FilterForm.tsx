@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import { DatePicker, DefaultButton, Dropdown, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IDropdownStyles, IStyleFunctionOrObject, PrimaryButton, Stack } from "@fluentui/react";
+import { DatePicker, DefaultButton, Dropdown, ICalloutContentStyles, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IDropdownStyles, IStyleFunctionOrObject, PrimaryButton, Stack } from "@fluentui/react";
 import * as React from "react";
 import { Globals, Language } from "../Globals";
 import styles from './SpfxCmFilters.module.scss';
@@ -134,13 +134,20 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     }
   };
 
+  const calloutStyles: Partial<ICalloutContentStyles> = {
+    calloutMain: {
+      overflow: 'auto'
+    },
+  };
+
   const dropdownStyles: Partial<IDropdownStyles> = {
     dropdownItem: {
       width: 'fit-content',
       minWidth: '100%'
     },
     dropdownItemsWrapper: {
-      overflow: 'auto'
+      width: 'max-content',
+      minWidth: '100%'
     }
   };
 
@@ -175,6 +182,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             }}
             selectedKeys={selectedJobTypes}
             multiSelect={true}
+            calloutProps={{styles: calloutStyles}}
           />
           {TermChipList(Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn, selectedJobTypes, setSelectedJobTypes, strings.selectedJobTypes, 'gcx-filter-jobType-label')}
         </Stack>
@@ -205,6 +213,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             }}
             selectedKeys={selectedProgramAreas}
             multiSelect={true}
+            calloutProps={{styles: calloutStyles}}
           />
           {TermChipList(Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn, selectedProgramAreas, setSelectedProgramAreas, strings.selectedProgramAreas, 'gcx-filter-programArea-label')}
         </Stack>
