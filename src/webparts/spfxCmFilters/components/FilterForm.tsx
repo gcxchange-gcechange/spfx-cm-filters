@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import { DatePicker, DefaultButton, Dropdown, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IStyleFunctionOrObject, PrimaryButton, Stack } from "@fluentui/react";
+import { DatePicker, DefaultButton, Dropdown, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IDropdownStyles, IStyleFunctionOrObject, PrimaryButton, Stack } from "@fluentui/react";
 import * as React from "react";
 import { Globals, Language } from "../Globals";
 import styles from './SpfxCmFilters.module.scss';
@@ -134,6 +134,16 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     }
   };
 
+  const dropdownStyles: Partial<IDropdownStyles> = {
+    dropdownItem: {
+      width: 'fit-content',
+      minWidth: '100%'
+    },
+    dropdownItemsWrapper: {
+      overflow: 'auto'
+    }
+  };
+
   return (
     <>
     <form id="gcx-cm-filter-form">
@@ -148,7 +158,10 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           <Dropdown 
             id='ddJobTypeFilter' 
             aria-labelledby='gcx-filter-jobType-label'
-            styles={{title: { borderColor: borderColor }}} 
+            styles={{
+              ...dropdownStyles,
+              title: { borderColor: borderColor }
+            }} 
             placeholder={strings.optionPlaceholder}
             options={Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn} 
             onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
@@ -175,7 +188,10 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           <Dropdown 
             id='ddProgramAreaFilter' 
             aria-labelledby='gcx-filter-programArea-label'
-            styles={{title: { borderColor: borderColor }}} 
+            styles={{
+              ...dropdownStyles,
+              title: { borderColor: borderColor }
+            }} 
             placeholder={strings.optionPlaceholder}
             options={Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn} 
             onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
