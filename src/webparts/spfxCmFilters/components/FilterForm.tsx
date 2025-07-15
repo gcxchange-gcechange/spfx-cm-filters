@@ -97,11 +97,15 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
       selectedTerms.some(term2 => term2 === term1.key)
     );
 
+    const selectedLabelId = `fId${label.replace(/\s+/g, '')}`;
+
     return chips.length > 0 ? (
-      <div className={styles.chipContainer}>
-        <label aria-labelledby={labeledBy}>
-          {label}
-        </label>
+      <div className={styles.chipContainer} role='group' aria-labelledby={selectedLabelId}>
+        <Stack horizontal className={styles.chipLabel}>
+          <div id={selectedLabelId} aria-labelledby={labeledBy}>
+            {label}
+          </div>
+        </Stack>
         {chips.map((term, index) => (
           <div className={styles.chip}>
             <span>{term.text}</span>
@@ -156,11 +160,11 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     <form id="gcx-cm-filter-form">
       <Stack className={styles.filterRow}>
 
-        <Stack className={styles.filter}>
+        <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-jobType-label'>
           <Stack horizontal className={styles.label}>
-            <label id='gcx-filter-jobType-label' htmlFor='ddJobTypeFilter'>
+            <div id='gcx-filter-jobType-label'>
               <b>{strings.jobType}</b>
-            </label>
+            </div>
           </Stack>
           <Dropdown 
             id='ddJobTypeFilter' 
@@ -187,11 +191,11 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           {TermChipList(Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn, selectedJobTypes, setSelectedJobTypes, strings.selectedJobTypes, 'gcx-filter-jobType-label')}
         </Stack>
   
-        <Stack className={styles.filter}>
+        <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-programArea-label'>
           <Stack horizontal className={styles.label}>
-            <label id='gcx-filter-programArea-label' htmlFor='ddProgramAreaFilter'>
+            <div id='gcx-filter-programArea-label'>
               <b>{strings.programArea}</b>
-            </label>
+            </div>
           </Stack>
           <Dropdown 
             id='ddProgramAreaFilter' 
@@ -218,15 +222,14 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           {TermChipList(Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn, selectedProgramAreas, setSelectedProgramAreas, strings.selectedProgramAreas, 'gcx-filter-programArea-label')}
         </Stack>
 
-        <Stack className={styles.filter} role='group'>
+        <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-applicationDeadline-label'>
           <Stack horizontal className={styles.label}>
-            <label id='gcx-filter-applicationDeadline-label'>
+            <div id='gcx-filter-applicationDeadline-label'>
               <b>{strings.applicationDeadline}</b>
-            </label>
+            </div>
           </Stack>
           <DatePicker
             id='dpApplicationDeadlineDate'
-            aria-labelledby='gcx-filter-applicationDeadline-label'
             styles={datePickerStyles}
             placeholder={strings.datePlaceholder}
             onSelectDate={(date: Date) => {

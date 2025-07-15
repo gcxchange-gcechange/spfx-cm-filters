@@ -33,6 +33,7 @@
 
   .label {
     padding-bottom: 6px;
+    cursor: default;
 
     b {
       font-weight: 500;
@@ -43,11 +44,15 @@
   .chipContainer {
     padding-top: 3px;
 
-    label {
+    .chipLabel {
       margin: 10px 0;
       font-weight: 500;
       font-size: 14px;
       display: block;
+
+      div {
+        cursor: default;
+      }
     }
 
     .chip {
