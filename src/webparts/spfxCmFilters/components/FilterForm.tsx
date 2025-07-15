@@ -218,9 +218,9 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           {TermChipList(Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn, selectedProgramAreas, setSelectedProgramAreas, strings.selectedProgramAreas, 'gcx-filter-programArea-label')}
         </Stack>
 
-        <Stack className={styles.filter}>
+        <Stack className={styles.filter} role='group'>
           <Stack horizontal className={styles.label}>
-            <label id='gcx-filter-applicationDeadline-label' htmlFor='dpApplicationDeadlineDate'>
+            <label id='gcx-filter-applicationDeadline-label'>
               <b>{strings.applicationDeadline}</b>
             </label>
           </Stack>
