@@ -247,7 +247,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
       <Stack className={styles.controls}>
         <DefaultButton
           id='gcx-cm-filter-clear'
-          aria-labelledby='gcx-cm-filter-title'
+          aria-describedby='gcx-cm-filter-title'
           aria-label={strings.clear}
           disabled={selectedJobTypes.length === 0 && selectedProgramAreas.length === 0 && applicationDeadline === ''}
           onClick={() => {
@@ -259,7 +259,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   
         <PrimaryButton
           id='gcx-cm-filter-apply'
-          aria-labelledby='gcx-cm-filter-title'
+          aria-describedby='gcx-cm-filter-title'
           aria-label={strings.apply}
           disabled={disableApply}
           onClick={() => {
