@@ -232,6 +232,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             id='dpApplicationDeadlineDate'
             styles={datePickerStyles}
             placeholder={strings.datePlaceholder}
+            ariaLabel={strings.datePlaceholder.replace(/-/g, "")}
             onSelectDate={(date: Date) => {
               // The format of this date is important
               setApplicationDeadline(`${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}`);
