@@ -191,7 +191,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           {TermChipList(Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn, selectedJobTypes, setSelectedJobTypes, strings.selectedJobTypes, 'gcx-filter-jobType-label')}
         </Stack>
   
-        <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-programArea-label'>
+        {/* <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-programArea-label'>
           <Stack horizontal className={styles.label}>
             <div id='gcx-filter-programArea-label'>
               <b>{strings.programArea}</b>
@@ -220,7 +220,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             calloutProps={{styles: calloutStyles}}
           />
           {TermChipList(Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn, selectedProgramAreas, setSelectedProgramAreas, strings.selectedProgramAreas, 'gcx-filter-programArea-label')}
-        </Stack>
+        </Stack> */}
 
         <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-applicationDeadline-label'>
           <Stack horizontal className={styles.label}>
