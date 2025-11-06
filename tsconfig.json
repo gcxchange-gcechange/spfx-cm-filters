@@ -13,13 +13,16 @@
     "outDir": "lib",
     "inlineSources": false,
     "noImplicitAny": true,
-
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@microsoft"
     ],
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "jest",
+      "@testing-library/jest-dom"
     ],
     "lib": [
       "es5",
