@@ -40,6 +40,9 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
         }
       });
 
+      jobTypeListEn.sort((a, b) => a.text.localeCompare(b.text));
+      jobTypeListFr.sort((a, b) => a.text.localeCompare(b.text));
+
       this.setState({jobTypeListEn, jobTypeListFr});
     }
 
@@ -56,6 +59,9 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
           console.log('The following term is deprecated and will not be added to the ProgramArea list:', term);
         }
       });
+
+      programAreaListEn.sort((a, b) => a.text.localeCompare(b.text));
+      programAreaListFr.sort((a, b) => a.text.localeCompare(b.text));
 
       this.setState({programAreaListEn, programAreaListFr});
     }

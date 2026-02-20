@@ -16,14 +16,14 @@ define([], function() {
     "btnExpanderOpen": "Click to expand Filters",
     "btnExpanderClosed": "Click to minimize Filters",
     "clear": "Clear filters",
-    "jobType": "Job type",
+    "jobType": "Opportunity type",
     "programArea": "Program area",
     "applicationDeadline": "Application deadline",
     "apply": "Apply filters",
     "optionPlaceholder": "--Choose one or more--",
     "datePlaceholder": "--Choose a date--",
     "remove": "Remove",
-    "selectedJobTypes": "Selected job types",
+    "selectedJobTypes": "Selected opportunity types",
     "selectedProgramAreas": "Selected program areas"
   }
 });
