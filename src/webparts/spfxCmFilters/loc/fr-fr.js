@@ -17,13 +17,13 @@ define([], function() {
     "btnExpanderClosed": "Cliquez pour minimiser les filtres",
     "clear": "Effacer les filtres",
     "jobType": "Type d'emploi",
-    "programArea": "Domaines de programme",
-    "applicationDeadline": "Date limite de candidature",
+    "programArea": "Domaine de travail",
+    "applicationDeadline": "Date limite de la candidature",
     "apply": "Appliquer des filtres",
-    "optionPlaceholder": "--Choisissez-en un ou plusieurs--",
+    "optionPlaceholder": "--Choisissez une ou plusieurs options--",
     "datePlaceholder": "--Choisissez une date--",
     "remove": "Retirer",
     "selectedJobTypes": "Types d'emplois sélectionnés",
-    "selectedProgramAreas": "Domaines de programme sélectionnés"
+    "selectedProgramAreas": "Domaine de travail sélectionnés"
   }
 });
