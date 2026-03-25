@@ -20,7 +20,7 @@ export interface ISpfxCmFiltersWebPartProps {
   debug: boolean;
   cacheTime: number;
   jobTypeTermSetGuid: string;
-  programAreaTermSetGuid: string;
+  // programAreaTermSetGuid: string;
 }
 
 export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmFiltersWebPartProps> {
@@ -56,7 +56,7 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
         debug: this.properties.debug,
         cacheTime: this.properties.cacheTime,
         jobTypeTermSetGuid: this.properties.jobTypeTermSetGuid,
-        programAreaTermSetGuid: this.properties.programAreaTermSetGuid
+        // programAreaTermSetGuid: this.properties.programAreaTermSetGuid
       }
     );
 
@@ -68,7 +68,7 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
     Globals.setCacheTime(this.properties.cacheTime ? this.properties.cacheTime : 30);
     Globals.setDebugMode(this.properties.debug);
     Globals.setJobTypeTermSetGuid(this.properties.jobTypeTermSetGuid);
-    Globals.setProgramAreaTermSetGuid(this.properties.programAreaTermSetGuid);
+    // Globals.setProgramAreaTermSetGuid(this.properties.programAreaTermSetGuid);
     
     return this._getEnvironmentMessage().then(message => {
       this._environmentMessage = message;
@@ -123,7 +123,7 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
   protected onDispose(): void {
     sessionStorage.removeItem(FilterSessionKeys.Initialized);
     sessionStorage.removeItem(FilterSessionKeys.JobType);
-    sessionStorage.removeItem(FilterSessionKeys.ProgramArea);
+    // sessionStorage.removeItem(FilterSessionKeys.ProgramArea);
     sessionStorage.removeItem(FilterSessionKeys.ApplicationDeadline);
 
     ReactDom.unmountComponentAtNode(this.domElement);
@@ -154,11 +154,11 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
                   value: Globals.getJobTypeTermSetGuid(),
                   placeholder: '45f37f08-3ff4-4d84-bf21-4a77ddffcf3e'
                 }),
-                PropertyPaneTextField('programAreaTermSetGuid', {
-                  label: 'ProgramArea term set GUID',
-                  value: Globals.getProgramAreaTermSetGuid(),
-                  placeholder: 'bd807536-d8e7-456b-aab0-fae3eecedd8a'
-                }),
+                // PropertyPaneTextField('programAreaTermSetGuid', {
+                //   label: 'ProgramArea term set GUID',
+                //   value: Globals.getProgramAreaTermSetGuid(),
+                //   placeholder: 'bd807536-d8e7-456b-aab0-fae3eecedd8a'
+                // }),
                 PropertyPaneTextField('cacheTime', {
                   label: 'Cache Time',
                   description: 'Enter a number in minutes',
@@ -197,9 +197,9 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
       case 'jobTypeTermSetGuid':
         Globals.setJobTypeTermSetGuid(newValue);
         break;
-      case 'programAreaTermSetGuid':
-        Globals.setProgramAreaTermSetGuid(newValue);
-        break;  
+      // case 'programAreaTermSetGuid':
+      //   Globals.setProgramAreaTermSetGuid(newValue);
+      //   break;  
     }
   }
 }
