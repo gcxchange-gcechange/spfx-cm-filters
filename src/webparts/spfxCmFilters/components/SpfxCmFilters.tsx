@@ -9,11 +9,11 @@ import { TermSet, TermSetError } from '../interfaces/ITermSet';
 
 const jobTypeListEn: IDropdownOption[] = [];
 const jobTypeListFr: IDropdownOption[] = [];
-const programAreaListEn: IDropdownOption[] = [];
-const programAreaListFr: IDropdownOption[] = [];
+// const programAreaListEn: IDropdownOption[] = [];
+// const programAreaListFr: IDropdownOption[] = [];
 
 const jobTypeCtrl = new SessionController<TermSet | TermSetError>('gcx-cm-jobTypeList');
-const programAreaCtrl = new SessionController<TermSet | TermSetError>('gcx-cm-programAreaList');
+// const programAreaCtrl = new SessionController<TermSet | TermSetError>('gcx-cm-programAreaList');
 
 export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> {
   strings = Globals.getStrings();
@@ -46,25 +46,25 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
       this.setState({jobTypeListEn, jobTypeListFr});
     }
 
-    const programAreaResponse = await programAreaCtrl.fetch(this.getProgramAreaTerms);
-    if (programAreaResponse && !(programAreaResponse as TermSetError).error) {
-      programAreaListEn.length = 0;
-      programAreaListFr.length = 0;
+    // const programAreaResponse = await programAreaCtrl.fetch(this.getProgramAreaTerms);
+    // if (programAreaResponse && !(programAreaResponse as TermSetError).error) {
+    //   programAreaListEn.length = 0;
+    //   programAreaListFr.length = 0;
 
-      (programAreaResponse as TermSet).value.forEach((term) => {
-        if (!term.isDeprecated) {
-          programAreaListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
-          programAreaListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
-        } else if (Globals.isDebugMode() ) {
-          console.log('The following term is deprecated and will not be added to the ProgramArea list:', term);
-        }
-      });
+    //   (programAreaResponse as TermSet).value.forEach((term) => {
+    //     if (!term.isDeprecated) {
+    //       programAreaListEn.push({key: term.id, text: term.labels.filter(t => t.languageTag === 'en-US')[0].name});
+    //       programAreaListFr.push({key: term.id, text: term.labels.filter(t => t.languageTag !== 'en-US')[0].name});
+    //     } else if (Globals.isDebugMode() ) {
+    //       console.log('The following term is deprecated and will not be added to the ProgramArea list:', term);
+    //     }
+    //   });
 
-      programAreaListEn.sort((a, b) => a.text.localeCompare(b.text));
-      programAreaListFr.sort((a, b) => a.text.localeCompare(b.text));
+    //   programAreaListEn.sort((a, b) => a.text.localeCompare(b.text));
+    //   programAreaListFr.sort((a, b) => a.text.localeCompare(b.text));
 
-      this.setState({programAreaListEn, programAreaListFr});
-    }
+    //   this.setState({programAreaListEn, programAreaListFr});
+    // }
   }
 
   public async componentDidUpdate(prevProps: Readonly<ISpfxCmFiltersProps>, prevState: Readonly<{}>, snapshot?: unknown): Promise<void> {
@@ -82,14 +82,14 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
     return await response.json();
   };
 
-  private getProgramAreaTerms = async (): Promise<TermSet> => {
-    const response = await fetch(`/_api/v2.1/termstore/sets/${Globals.getProgramAreaTermSetGuid()}/terms/`, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json;odata=verbose' }
-    });
+  // private getProgramAreaTerms = async (): Promise<TermSet> => {
+  //   const response = await fetch(`/_api/v2.1/termstore/sets/${Globals.getProgramAreaTermSetGuid()}/terms/`, {
+  //     method: 'GET',
+  //     headers: { 'Accept': 'application/json;odata=verbose' }
+  //   });
   
-    return await response.json();
-  };
+  //   return await response.json();
+  // };
 
   public render(): React.ReactElement<ISpfxCmFiltersProps> {
     const {
@@ -106,8 +106,8 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
         <FilterForm
           jobTypeListEn={jobTypeListEn}
           jobTypeListFr={jobTypeListFr}
-          programAreaListEn={programAreaListEn}
-          programAreaListFr={programAreaListFr}
+          // programAreaListEn={programAreaListEn}
+          // programAreaListFr={programAreaListFr}
         />
       </section>
     );

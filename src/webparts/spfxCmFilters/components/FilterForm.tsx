@@ -7,8 +7,8 @@ import styles from './SpfxCmFilters.module.scss';
 export interface ISearchFormProps {
   jobTypeListEn: IDropdownOption[];
   jobTypeListFr: IDropdownOption[];
-  programAreaListEn: IDropdownOption[];
-  programAreaListFr: IDropdownOption[];
+  // programAreaListEn: IDropdownOption[];
+  // programAreaListFr: IDropdownOption[];
 }
 
 export enum FilterSessionKeys {
@@ -22,42 +22,42 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   const strings = Globals.getStrings();
 
   const [selectedJobTypes, setSelectedJobTypes] = React.useState<string[]>([]);
-  const [selectedProgramAreas, setSelectedProgramAreas] = React.useState<string[]>([]);
+  // const [selectedProgramAreas, setSelectedProgramAreas] = React.useState<string[]>([]);
   const [applicationDeadline, setApplicationDeadline] = React.useState('');
   const [disableApply, setDisableApply] = React.useState(true);
 
   const appliedJobTypes = React.useRef<string[]>([]);
-  const appliedProgramAreas = React.useRef<string[]>([]);
+  // const appliedProgramAreas = React.useRef<string[]>([]);
   const appliedApplicationDeadline = React.useRef<string>('');
 
   const SetSessionKeys = (): void => {
     const jobTypes = selectedJobTypes.join(',');
-    const programAreas = selectedProgramAreas.join(',');
+    // const programAreas = selectedProgramAreas.join(',');
 
     sessionStorage.setItem(FilterSessionKeys.JobType, jobTypes === undefined ? '' : jobTypes);
-    sessionStorage.setItem(FilterSessionKeys.ProgramArea, programAreas === undefined ? '' : programAreas);
+    // sessionStorage.setItem(FilterSessionKeys.ProgramArea, programAreas === undefined ? '' : programAreas);
     sessionStorage.setItem(FilterSessionKeys.ApplicationDeadline, applicationDeadline);
 
     appliedJobTypes.current = [...selectedJobTypes];
-    appliedProgramAreas.current = [...selectedProgramAreas];
+    // appliedProgramAreas.current = [...selectedProgramAreas];
     appliedApplicationDeadline.current = applicationDeadline;
 
     setDisableApply(true);
 
     if (Globals.isDebugMode()) {
       console.log('\njobType: ' + jobTypes);
-      console.log('programArea: ' + programAreas);
+      // console.log('programArea: ' + programAreas);
       console.log('applicationDeadline: ' + applicationDeadline);
     }
   }
 
   const ClearValues = (): void => {
     appliedJobTypes.current = [];
-    appliedProgramAreas.current = [];
+    // appliedProgramAreas.current = [];
     appliedApplicationDeadline.current = '';
 
     setSelectedJobTypes([]);
-    setSelectedProgramAreas([]);
+    // setSelectedProgramAreas([]);
     setApplicationDeadline(''); 
   }
 
@@ -76,20 +76,27 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     const isMatchJobType = selectedJobTypes.length === appliedJobTypes.current.length &&
       selectedJobTypes.every(val => appliedJobTypes.current.indexOf(val) !== -1)
   
-    const isMatchProgramArea = selectedProgramAreas.length === appliedProgramAreas.current.length &&
-      selectedProgramAreas.every(val => appliedProgramAreas.current.indexOf(val) !== -1)
+    // const isMatchProgramArea = selectedProgramAreas.length === appliedProgramAreas.current.length &&
+    //   selectedProgramAreas.every(val => appliedProgramAreas.current.indexOf(val) !== -1)
 
     const isMatchDeadline = applicationDeadline === appliedApplicationDeadline.current;
 
-    const selectedMatchesApplied = isMatchJobType && isMatchProgramArea && isMatchDeadline;
+    const selectedMatchesApplied = isMatchJobType 
+    // && isMatchProgramArea 
+    && isMatchDeadline;
     
     setDisableApply(selectedMatchesApplied);
 
-    const allCleared = selectedJobTypes.length === 0 && selectedProgramAreas.length === 0 && applicationDeadline === '';
+    const allCleared = selectedJobTypes.length === 0 
+    // && selectedProgramAreas.length === 0 
+    && applicationDeadline === '';
+
     if (allCleared && selectedMatchesApplied) {
       SetSessionKeys();
     }
-  }, [selectedJobTypes, selectedProgramAreas, applicationDeadline]);
+  }, [selectedJobTypes, 
+      // selectedProgramAreas, 
+      applicationDeadline]);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   const TermChipList = (originalList: IDropdownOption[], selectedTerms: string[], updateFunc: Function, label: string, labeledBy: string): JSX.Element => {
@@ -191,7 +198,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           {TermChipList(Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn, selectedJobTypes, setSelectedJobTypes, strings.selectedJobTypes, 'gcx-filter-jobType-label')}
         </Stack>
   
-        <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-programArea-label'>
+        {/* <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-programArea-label'>
           <Stack horizontal className={styles.label}>
             <div id='gcx-filter-programArea-label'>
               <b>{strings.programArea}</b>
@@ -220,7 +227,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             calloutProps={{styles: calloutStyles}}
           />
           {TermChipList(Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn, selectedProgramAreas, setSelectedProgramAreas, strings.selectedProgramAreas, 'gcx-filter-programArea-label')}
-        </Stack>
+        </Stack> */}
 
         <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-applicationDeadline-label'>
           <Stack horizontal className={styles.label}>
@@ -250,7 +257,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           id='gcx-cm-filter-clear'
           aria-describedby='gcx-cm-filter-title'
           aria-label={strings.clear}
-          disabled={selectedJobTypes.length === 0 && selectedProgramAreas.length === 0 && applicationDeadline === ''}
+          disabled={selectedJobTypes.length === 0 /*&& selectedProgramAreas.length === 0*/ && applicationDeadline === ''}
           onClick={() => {
             ClearValues();
           }}

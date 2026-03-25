@@ -7,5 +7,4 @@ export interface ISpfxCmFiltersProps {
   debug: boolean;
   cacheTime: number;
   jobTypeTermSetGuid: string;
-  programAreaTermSetGuid: string;
 }
