@@ -52,11 +52,11 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
+        context: this.context,
         language: this.properties.language,
         debug: this.properties.debug,
         cacheTime: this.properties.cacheTime,
-        jobTypeTermSetGuid: this.properties.jobTypeTermSetGuid,
-        // programAreaTermSetGuid: this.properties.programAreaTermSetGuid
+        jobTypeTermSetGuid: this.properties.jobTypeTermSetGuid
       }
     );
 
@@ -68,7 +68,6 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
     Globals.setCacheTime(this.properties.cacheTime ? this.properties.cacheTime : 30);
     Globals.setDebugMode(this.properties.debug);
     Globals.setJobTypeTermSetGuid(this.properties.jobTypeTermSetGuid);
-    // Globals.setProgramAreaTermSetGuid(this.properties.programAreaTermSetGuid);
     
     return this._getEnvironmentMessage().then(message => {
       this._environmentMessage = message;
@@ -121,6 +120,7 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
   }
 
   protected onDispose(): void {
+    // TODO: Update cleanup for new additions to the filters
     sessionStorage.removeItem(FilterSessionKeys.Initialized);
     sessionStorage.removeItem(FilterSessionKeys.JobType);
     // sessionStorage.removeItem(FilterSessionKeys.ProgramArea);
