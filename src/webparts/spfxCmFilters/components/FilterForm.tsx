@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import { DefaultButton, Dropdown, ICalloutContentStyles, Icon, IconButton, IDropdownOption, IDropdownStyles, PrimaryButton, Stack } from "@fluentui/react";
+import { ComboBox, DefaultButton, Dropdown, ICalloutContentStyles, IComboBox, IComboBoxOption, IComboBoxStyles, Icon, IconButton, IDropdownOption, IDropdownStyles, PrimaryButton, Stack } from "@fluentui/react";
 import * as React from "react";
 import { Globals, Language } from "../Globals";
 import styles from './SpfxCmFilters.module.scss';
@@ -239,7 +239,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     return [...jobTypeChips, ...classificationChips, ...classificationLevelChips, ...departmentChips, ...workArrangementChips, ...cityChips, ...languageRequirementChips];
   };
 
-  const UnifiedChipList = (): JSX.Element => {
+  const SelectedChipList = (): JSX.Element => {
     const chips = getAllSelectedChips();
 
     if (chips.length === 0) return <></>;
@@ -322,6 +322,38 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     }
   };
 
+  const comboBoxStyles: Partial<IComboBoxStyles> = {
+    root: {
+      selectors: {
+        '::after': {
+          borderColor: borderColor,
+        },
+      },
+    },
+    rootHovered: {
+      selectors: {
+        '::after': {
+          borderColor: 'rgb(50, 49, 48)',
+        },
+      },
+    },
+    rootFocused: {
+      selectors: {
+        '::after': {
+          borderColor: 'rgb(3, 120, 124)',
+        },
+      },
+    }
+  }
+
+  const CalcComponentWidth = (numberOfItems: number, gap: number = 10): React.CSSProperties => {
+    gap = numberOfItems <= 1 ? 0 : gap;
+    return {
+      width: `calc((100% - ${gap}px) / ${numberOfItems}`,
+      maxWidth: `calc((100% - ${gap}px) / ${numberOfItems}`
+    }
+  }
+
   const disabledClearFilter = (
     selectedJobTypes.length + 
     selectedClassificationCodes.length + 
@@ -329,25 +361,27 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     selectedDepartments.length + 
     selectedWorkArrangements.length 
     + selectedCities.length 
-    + selectedLanguageRequirements.length) === 0;
+    + selectedLanguageRequirements.length
+  ) === 0;
 
   return (
     <>
     <form id="gcx-cm-filter-form">
       <Stack className={styles.filterRow}>
 
+        {/* OPPORTUNITY DETAILS */}
         <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-opportunityDetails-label'>
           <Stack horizontal className={styles.label}>
             <div id='gcx-filter-opportunityDetails-label'>
               <b>{strings.opportunityDetails}</b>
             </div>
           </Stack>
-          
-          <Stack horizontal tokens={{ childrenGap: 10 }}>
-            <Stack grow styles={{ root: { minWidth: 0 } }}>
+
+          <div className={styles.row}>
+            <div style={CalcComponentWidth(4)}>
               <Dropdown 
                 id='ddJobTypeFilter' 
-                aria-label={strings.jobType}
+                aria-labelledby={strings.jobType}
                 placeholder={strings.jobType}
                 styles={{
                   ...dropdownStyles,
@@ -367,34 +401,31 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 multiSelect={true}
                 calloutProps={{styles: calloutStyles}}
               />
-            </Stack>
-            
-            <Stack grow styles={{ root: { minWidth: 0 } }}>
-              <Dropdown 
+            </div>
+            <div style={CalcComponentWidth(4)}>
+              <ComboBox 
                 id='ddClassificationCodeFilter' 
-                aria-labelledby={strings.classification}
+                aria-label={strings.classification}
                 placeholder={strings.classification}
-                styles={{
-                  ...dropdownStyles,
-                  title: { borderColor: borderColor }
-                }} 
+                styles={comboBoxStyles}
                 options={Globals.getLanguage() === Language.French ? props.classificationCodeListFr : props.classificationCodeListEn} 
-                onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
+                onChange={(e: React.FormEvent<IComboBox>, option?: IComboBoxOption) => {
                   if (!option) return;
-      
+
                   const newSelectedKeys = option.selected
-                    ? [...selectedClassificationCodes, option.key] as string[] 
+                    ? [...selectedClassificationCodes, option.key as string]
                     : selectedClassificationCodes.filter(key => key !== option.key);
-      
+
                   setSelectedClassificationCodes(newSelectedKeys);
+                  (e.target as HTMLElement)?.blur();
                 }}
-                selectedKeys={selectedClassificationCodes}
+                selectedKey={selectedClassificationCodes}
                 multiSelect={true}
+                autoComplete="on"
                 calloutProps={{styles: calloutStyles}}
               />
-            </Stack>
-
-            <Stack grow styles={{ root: { minWidth: 0 } }}>
+            </div>
+            <div style={CalcComponentWidth(4)}>
               <Dropdown 
                 id='ddClassificationLevelFilter' 
                 aria-labelledby={strings.classificationLevel}
@@ -417,36 +448,34 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 multiSelect={true}
                 calloutProps={{styles: calloutStyles}}
               />
-            </Stack>
-
-            <Stack grow styles={{ root: { minWidth: 0 } }}>
-              <Dropdown 
+            </div>
+            <div style={CalcComponentWidth(4)}>
+              <ComboBox 
                 id='ddDepartmentFilter' 
-                aria-labelledby={strings.department}
+                aria-label={strings.department}
                 placeholder={strings.department}
-                styles={{
-                  ...dropdownStyles,
-                  title: { borderColor: borderColor }
-                }} 
+                styles={comboBoxStyles} 
                 options={Globals.getLanguage() === Language.French ? props.departmentListFr : props.departmentListEn} 
-                onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
+                onChange={(e: React.FormEvent<IComboBox>, option?: IComboBoxOption) => {
                   if (!option) return;
-      
+
                   const newSelectedKeys = option.selected
-                    ? [...selectedDepartments, option.key] as string[] 
+                    ? [...selectedDepartments, option.key as string]
                     : selectedDepartments.filter(key => key !== option.key);
-      
+
                   setSelectedDepartments(newSelectedKeys);
+                  (e.target as HTMLElement)?.blur();
                 }}
-                selectedKeys={selectedDepartments}
+                selectedKey={selectedDepartments}
                 multiSelect={true}
+                autoComplete="on"
                 calloutProps={{styles: calloutStyles}}
               />
-            </Stack>
-
-          </Stack>
+            </div>
+          </div>
         </Stack>
 
+        {/* LOCATION */}
         <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-location-label'>
           <Stack horizontal className={styles.label}>
             <div id='gcx-filter-location-label'>
@@ -454,8 +483,8 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             </div>
           </Stack>
 
-          <Stack horizontal tokens={{ childrenGap: 10 }}>
-            <Stack grow styles={{ root: { minWidth: 0 } }}>
+          <div className={styles.row}>
+            <div style={CalcComponentWidth(2)}>
               <Dropdown 
                 id='ddWorkArrangementFilter' 
                 aria-label={strings.workArrangement}
@@ -478,35 +507,34 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 multiSelect={true}
                 calloutProps={{styles: calloutStyles}}
               />
-            </Stack>
-
-            <Stack grow styles={{ root: { minWidth: 0 } }}>
-              <Dropdown 
+            </div>
+            <div style={CalcComponentWidth(2)}>
+              <ComboBox 
                 id='ddCityFilter' 
                 aria-label={strings.city}
                 placeholder={strings.city}
-                styles={{
-                  ...dropdownStyles,
-                  title: { borderColor: borderColor }
-                }} 
+                styles={comboBoxStyles}
                 options={Globals.getLanguage() === Language.French ? props.cityListFr : props.cityListEn} 
-                onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
+                onChange={(e: React.FormEvent<IComboBox>, option?: IComboBoxOption) => {
                   if (!option) return;
-      
+
                   const newSelectedKeys = option.selected
-                    ? [...selectedCities, option.key] as string[] 
+                    ? [...selectedCities, option.key as string]
                     : selectedCities.filter(key => key !== option.key);
-      
+
                   setSelectedCities(newSelectedKeys);
+                  (e.target as HTMLElement)?.blur();
                 }}
-                selectedKeys={selectedCities}
+                selectedKey={selectedCities}
                 multiSelect={true}
+                autoComplete="on"
                 calloutProps={{styles: calloutStyles}}
               />
-            </Stack>
-          </Stack>
+            </div>
+          </div>
         </Stack>
 
+        {/* REQUIREMENTS */}
         <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-requirements-label'>
           <Stack horizontal className={styles.label}>
             <div id='gcx-filter-requirements-label'>
@@ -537,10 +565,10 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             </Stack>
           </Stack>
         </Stack>
-        
 
+        {/* CHIP LIST */}
         <div className={styles.chipContainer}>
-            <UnifiedChipList />
+            <SelectedChipList />
         </div>
       </Stack>
 
