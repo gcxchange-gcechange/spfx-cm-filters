@@ -42,7 +42,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   const [selectedDepartments, setSelectedDepartments] = React.useState<string[]>([]);
   const [selectedWorkArrangements, setSelectedWorkArrangements] = React.useState<string[]>([]);
   const [selectedCities, setSelectedCities] = React.useState<string[]>([]);
-  const [selectedLanguageRequirements, setSelectedLanguageRequirements] = React.useState<string[]>([]);
+  const [selectedLanguageRequirements, setSelectedLanguageRequirements] = React.useState<string>('');
 
   const [disableApply, setDisableApply] = React.useState(true);
 
@@ -52,7 +52,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   const appliedDepartments = React.useRef<string[]>([]);
   const appliedWorkArrangements = React.useRef<string[]>([]);
   const appliedCities = React.useRef<string[]>([]);
-  const appliedLanguageRequirements = React.useRef<string[]>([]);
+  const appliedLanguageRequirements = React.useRef<string>();
 
   const SetSessionKeys = (): void => {
     const jobTypes = selectedJobTypes.join(',');
@@ -61,7 +61,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     const departments = selectedDepartments.join(',');
     const workArrangements = selectedWorkArrangements.join(',');
     const cities = selectedCities.join(',');
-    const languageRequirements = selectedLanguageRequirements.join(',');
+    const languageRequirements = selectedLanguageRequirements;
 
     sessionStorage.setItem(FilterSessionKeys.JobType, jobTypes === undefined ? '' : jobTypes);
     sessionStorage.setItem(FilterSessionKeys.ClassificationCode, classificationCodes === undefined ? '' : classificationCodes);
@@ -77,7 +77,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     appliedDepartments.current = [...selectedDepartments];
     appliedWorkArrangements.current = [...selectedWorkArrangements];
     appliedCities.current = [...selectedCities];
-    appliedLanguageRequirements.current = [...selectedLanguageRequirements];
+    appliedLanguageRequirements.current = selectedLanguageRequirements;
 
     setDisableApply(true);
 
@@ -99,7 +99,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     appliedDepartments.current = [];
     appliedWorkArrangements.current = [];
     appliedCities.current = [];
-    appliedLanguageRequirements.current = [];
+    appliedLanguageRequirements.current = '';
 
     setSelectedJobTypes([]);
     setSelectedClassificationCodes([]);
@@ -107,7 +107,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     setSelectedDepartments([]);
     setSelectedWorkArrangements([]);
     setSelectedCities([]);
-    setSelectedLanguageRequirements([]);
+    setSelectedLanguageRequirements('');
   }
 
   React.useEffect(() => {
@@ -140,8 +140,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     const isMatchCities = selectedCities.length === appliedCities.current.length &&
       selectedCities.every(val => appliedCities.current.indexOf(val) !== -1);
 
-    const isMatchLanguageRequirements = selectedLanguageRequirements.length === appliedLanguageRequirements.current.length &&
-      selectedLanguageRequirements.every(val => appliedLanguageRequirements.current.indexOf(val) !== -1);
+    const isMatchLanguageRequirements = selectedLanguageRequirements === appliedLanguageRequirements.current;
 
     const selectedMatchesApplied = isMatchJobType 
     && isMatchClassificationCodes
@@ -159,7 +158,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     && selectedDepartments.length === 0
     && selectedWorkArrangements.length === 0
     && selectedCities.length === 0
-    && selectedLanguageRequirements.length === 0;
+    && selectedLanguageRequirements === '';
 
     if (allCleared && selectedMatchesApplied) {
       SetSessionKeys();
@@ -230,7 +229,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
 
     const languageRequirementOptions = Globals.getLanguage() === Language.French ? props.languageRequirementListFr : props.languageRequirementListEn;
     const languageRequirementChips = languageRequirementOptions
-    .filter(opt => selectedLanguageRequirements.indexOf(opt.key as string) !== -1)
+    .filter(opt => selectedLanguageRequirements === opt.key)
     .map(opt => ({
       key: opt.key as string,
       text: opt.text,
@@ -279,9 +278,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                     prev.filter(k => k !== chip.key)
                   );
                 } else if (chip.source === strings.languageRequirement) {
-                  setSelectedLanguageRequirements(prev =>
-                    prev.filter(k => k !== chip.key)
-                  );
+                  setSelectedLanguageRequirements('');
                 }
 
                 setDisableApply(false);
@@ -297,8 +294,13 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
 
   const borderColor: string = '#c2c2c2';
   const calloutStyles: Partial<ICalloutContentStyles> = {
+    root: {
+      minWidth: 'fit-content',
+    },
     calloutMain: {
-      overflow: 'auto'
+      width: 'fit-content',
+      minWidth: '100%',
+      maxWidth: 'none'
     },
   };
 
@@ -312,14 +314,22 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
       whiteSpace: 'nowrap'
     },
     dropdownItem: {
-      width: 'fit-content',
-      minWidth: '100%'
+      whiteSpace: 'normal',
+      wordBreak: 'break-word'
     },
     dropdownItemsWrapper: {
-      width: 'max-content',
       minWidth: '100%'
     }
   };
+
+  const disabledClearFilter = (
+    selectedJobTypes.length + 
+    selectedClassificationCodes.length + 
+    selectedClassificationLevels.length + 
+    selectedDepartments.length + 
+    selectedWorkArrangements.length 
+    + selectedCities.length 
+    + selectedLanguageRequirements.length) === 0;
 
   return (
     <>
@@ -503,7 +513,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
               <b>{strings.requirements}</b>
             </div>
           </Stack>
-          
+
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Stack grow styles={{ root: { minWidth: 0 } }}>
               <Dropdown 
@@ -517,15 +527,11 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 options={Globals.getLanguage() === Language.French ? props.languageRequirementListFr : props.languageRequirementListEn} 
                 onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
                   if (!option) return;
-      
-                  const newSelectedKeys = option.selected
-                    ? [...selectedLanguageRequirements, option.key] as string[] 
-                    : selectedLanguageRequirements.filter(key => key !== option.key);
-      
-                  setSelectedLanguageRequirements(newSelectedKeys);
+
+                  setSelectedLanguageRequirements(option.key ? option.key as string : '');
                 }}
-                selectedKeys={selectedLanguageRequirements}
-                multiSelect={true}
+                selectedKey={selectedLanguageRequirements}
+                multiSelect={false}
                 calloutProps={{styles: calloutStyles}}
               />
             </Stack>
@@ -543,7 +549,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           id='gcx-cm-filter-clear'
           aria-describedby='gcx-cm-filter-title'
           aria-label={strings.clear}
-          disabled={selectedJobTypes.length === 0 && selectedClassificationCodes.length === 0}
+          disabled={disabledClearFilter}
           onClick={() => {
             ClearValues();
           }}
