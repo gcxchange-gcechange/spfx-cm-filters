@@ -45,7 +45,7 @@ const languageRequirementListFr: IDropdownOption[] = [];
 
 export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> {
   strings = Globals.getStrings();
-  sp: SPFI;
+  sp!: SPFI;
 
   public constructor(props: ISpfxCmFiltersProps, state: ISpfxCmFiltersProps){ 
     super(props); 

@@ -305,6 +305,13 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   };
 
   const dropdownStyles: Partial<IDropdownStyles> = {
+    root: {
+      selectors: {
+        ':hover .ms-Dropdown-title': {
+          borderColor: 'rgb(50, 49, 48) !important',
+        },
+      },
+    },
     dropdown: {
       width: '100%'
     },
@@ -323,24 +330,10 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
   };
 
   const comboBoxStyles: Partial<IComboBoxStyles> = {
-    root: {
-      selectors: {
-        '::after': {
-          borderColor: borderColor,
-        },
-      },
-    },
     rootHovered: {
       selectors: {
         '::after': {
-          borderColor: 'rgb(50, 49, 48)',
-        },
-      },
-    },
-    rootFocused: {
-      selectors: {
-        '::after': {
-          borderColor: 'rgb(3, 120, 124)',
+          borderColor: 'rgb(50, 49, 48) !important',
         },
       },
     }

@@ -109,4 +109,21 @@
       flex-flow: column;
     }
   }
+
+  :global(.ms-ComboBox.is-open)::after,
+  :global(.ms-ComboBox:focus-within)::after {
+    border-color: rgb(3, 120, 124) !important;
+  }
+
+  :global(.ms-Dropdown.is-open .ms-Dropdown-title),
+  :global(.ms-Dropdown:focus-within .ms-Dropdown-title) {
+    border-width: 2px;
+    border-color: rgb(3, 120, 124) !important;
+  }
+
+  :global(.ms-Dropdown:not(.is-open) .ms-Dropdown-title),
+  :global(.ms-ComboBox:not(.is-open))::after {
+    border-color: #c2c2c2;
+    border-width: 1px;
+  }
 }
