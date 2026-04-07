@@ -120,11 +120,9 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
   }
 
   protected onDispose(): void {
-    // TODO: Update cleanup for new additions to the filters
-    sessionStorage.removeItem(FilterSessionKeys.Initialized);
-    sessionStorage.removeItem(FilterSessionKeys.JobType);
-    // sessionStorage.removeItem(FilterSessionKeys.ProgramArea);
-    sessionStorage.removeItem(FilterSessionKeys.ApplicationDeadline);
+    (Object.keys(FilterSessionKeys) as (keyof typeof FilterSessionKeys)[])
+    .map(k => FilterSessionKeys[k])
+    .forEach(key => sessionStorage.removeItem(key));
 
     ReactDom.unmountComponentAtNode(this.domElement);
   }
@@ -154,11 +152,6 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
                   value: Globals.getJobTypeTermSetGuid(),
                   placeholder: '45f37f08-3ff4-4d84-bf21-4a77ddffcf3e'
                 }),
-                // PropertyPaneTextField('programAreaTermSetGuid', {
-                //   label: 'ProgramArea term set GUID',
-                //   value: Globals.getProgramAreaTermSetGuid(),
-                //   placeholder: 'bd807536-d8e7-456b-aab0-fae3eecedd8a'
-                // }),
                 PropertyPaneTextField('cacheTime', {
                   label: 'Cache Time',
                   description: 'Enter a number in minutes',
@@ -197,9 +190,6 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
       case 'jobTypeTermSetGuid':
         Globals.setJobTypeTermSetGuid(newValue);
         break;
-      // case 'programAreaTermSetGuid':
-      //   Globals.setProgramAreaTermSetGuid(newValue);
-      //   break;  
     }
   }
 }

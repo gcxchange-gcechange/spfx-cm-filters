@@ -18,6 +18,7 @@
       font-weight: 600;
       display: inline-block;
       margin-top: 0;
+      margin-bottom: 10px;
     }
   }
 
@@ -36,24 +37,14 @@
     cursor: default;
 
     b {
-      font-weight: 500;
       font-size: 14px;
+      font-weight: 600;
+      //color: #044D4D;
     }
   }
 
   .chipContainer {
     padding-top: 3px;
-
-    .chipLabel {
-      margin: 10px 0;
-      font-weight: 500;
-      font-size: 14px;
-      display: block;
-
-      div {
-        cursor: default;
-      }
-    }
 
     .chip {
       display: inline-block;
@@ -61,12 +52,11 @@
       padding: 0 0 0 10px;
       margin: 2px 2px;
       border-radius: 20px;
-      background-color: #b6d1d1;
-      border: 1px solid #153c3e;
+      background-color: #044D4D;
 
       span {
         pointer-events: none;
-        color: #153c3e
+        color: #FFF
       }
 
       button {

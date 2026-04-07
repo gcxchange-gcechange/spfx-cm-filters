@@ -12,18 +12,24 @@ define([], function() {
     "AppOfficeEnvironment": "The app is running in office.com",
     "AppOutlookEnvironment": "The app is running in Outlook",
     "UnknownEnvironment": "The app is running in an unknown environment",
-    "Filters": "Filters",
+    "Filters": "Filter opportunities",
     "btnExpanderOpen": "Click to expand Filters",
     "btnExpanderClosed": "Click to minimize Filters",
     "clear": "Clear filters",
     "jobType": "Opportunity type",
-    "programArea": "Program area",
     "applicationDeadline": "Application deadline",
     "apply": "Apply filters",
     "optionPlaceholder": "--Choose one or more--",
     "datePlaceholder": "--Choose a date--",
     "remove": "Remove",
-    "selectedJobTypes": "Selected opportunity types",
-    "selectedProgramAreas": "Selected program areas"
+    "opportunityDetails": "Opportunity details",
+    "location": "Location",
+    "requirements": "Requirements",
+    "classification": "Classification",
+    "classificationLevel": "Classification level",
+    "department": "Department",
+    "workArrangement": "Work arrangement",
+    "city": "City",
+    "languageRequirement": "Language requirement"
   }
 });

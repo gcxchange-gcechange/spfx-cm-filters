@@ -12,18 +12,24 @@ define([], function() {
     "AppOfficeEnvironment": "The app is running in office.com",
     "AppOutlookEnvironment": "The app is running in Outlook",
     "UnknownEnvironment": "The app is running in an unknown environment",
-    "Filters": "Filtres",
+    "Filters": "Filtre les opportunités",
     "btnExpanderOpen": "Cliquez pour développer les filtres",
     "btnExpanderClosed": "Cliquez pour minimiser les filtres",
     "clear": "Effacer les filtres",
     "jobType": "Type d'opportunité",
-    "programArea": "Domaine de travail",
     "applicationDeadline": "Date limite de la candidature",
     "apply": "Appliquer des filtres",
     "optionPlaceholder": "--Choisissez une ou plusieurs options--",
     "datePlaceholder": "--Choisissez une date--",
     "remove": "Retirer",
-    "selectedJobTypes": "Types d'opportunités sélectionnés",
-    "selectedProgramAreas": "Domaine de travail sélectionnés"
+    "opportunityDetails": "Détails de l'opportunité",
+    "location": "Lieu",
+    "requirements": "Exigences",
+    "classification": "Classification",
+    "classificationLevel": "Niveau de classification",
+    "department": "Ministère",
+    "workArrangement": "Régimes de travail",
+    "city": "Ville",
+    "languageRequirement": "Exigences linguistiques"
   }
 });

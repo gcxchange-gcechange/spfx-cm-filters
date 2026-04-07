@@ -94,7 +94,7 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
 
         reacthandler.setState({classificationCodeListEn, classificationCodeListFr});
       }
-    } catch (e) { if (Globals.isDebugMode()) console.error('Unable to fetch ClassificationCode list', e);}
+    } catch (e) { console.error('Unable to fetch ClassificationCode list', e);}
 
     try {
       const classLevelResponse = await classLevelCtrl.fetch(this.sp.web.lists.getByTitle('ClassificationLevel').items.select('ID,NameEn,NameFr').top(5000));
@@ -112,7 +112,7 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
 
         reacthandler.setState({classificationLevelListEn, classificationLevelListFr});
       }
-    } catch (e) { if (Globals.isDebugMode()) console.error('Unable to fetch ClassificationLevel list', e);}
+    } catch (e) { console.error('Unable to fetch ClassificationLevel list', e);}
 
     try {
       const departmentResponse = await departmentCtrl.fetch(this.sp.web.lists.getByTitle('Department').items.select('ID,NameEn,NameFr').top(5000));
@@ -130,7 +130,7 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
 
         reacthandler.setState({departmentListEn, departmentListFr});
       }
-    } catch (e) { if (Globals.isDebugMode()) console.error('Unable to fetch Department list', e);}
+    } catch (e) { console.error('Unable to fetch Department list', e);}
 
     try {
       const workArrangementResponse = await workArrangementCtrl.fetch(this.sp.web.lists.getByTitle('WorkArrangement').items.select('ID,NameEn,NameFr').top(5000));
@@ -148,7 +148,7 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
 
         reacthandler.setState({workArrangementListEn, workArrangementListFr});
       }
-    } catch (e) { if (Globals.isDebugMode()) console.error('Unable to fetch WorkArrangement list', e);}
+    } catch (e) { console.error('Unable to fetch WorkArrangement list', e);}
 
     try {
       const cityResponse = await cityCtrl.fetch(this.sp.web.lists.getByTitle('City').items
@@ -184,9 +184,9 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
 
             reacthandler.setState({cityListEn, cityListFr});
           }
-        } catch (e) { if (Globals.isDebugMode()) console.error('Unable to fetch Province list', e);}
+        } catch (e) { console.error('Unable to fetch Province list', e);}
       }
-    } catch (e) { if (Globals.isDebugMode()) console.error('Unable to fetch City list', e);}
+    } catch (e) { console.error('Unable to fetch City list', e);}
 
     try {
       const languageRequirementResponse = await languageReqCtrl.fetch(this.sp.web.lists.getByTitle('LanguageRequirement').items.select('ID,NameEn,NameFr').top(5000));
@@ -204,7 +204,7 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
 
         reacthandler.setState({languageRequirementListEn, languageRequirementListFr});
       }
-    } catch (e) { if (Globals.isDebugMode()) console.error('Unable to fetch LanguageRequirement list', e);}
+    } catch (e) { console.error('Unable to fetch LanguageRequirement list', e);}
   }
 
   public async componentDidUpdate(prevProps: Readonly<ISpfxCmFiltersProps>, prevState: Readonly<{}>, snapshot?: unknown): Promise<void> {
@@ -242,6 +242,18 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
         <FilterForm
           jobTypeListEn={jobTypeListEn}
           jobTypeListFr={jobTypeListFr}
+          classificationCodeListEn={classificationCodeListEn}
+          classificationCodeListFr={classificationCodeListFr}
+          classificationLevelListEn={classificationLevelListEn}
+          classificationLevelListFr={classificationLevelListFr}
+          departmentListEn={departmentListEn}
+          departmentListFr={departmentListFr}
+          workArrangementListEn={workArrangementListEn}
+          workArrangementListFr={workArrangementListFr}
+          cityListEn={cityListEn}
+          cityListFr={cityListFr}
+          languageRequirementListEn={languageRequirementListEn}
+          languageRequirementListFr={languageRequirementListFr}
         />
       </section>
     );
