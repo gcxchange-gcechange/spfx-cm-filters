@@ -3,7 +3,7 @@ import * as React from 'react';
 import styles from './SpfxCmFilters.module.scss';
 import type { ISpfxCmFiltersProps } from './ISpfxCmFiltersProps';
 import { Globals, Language } from '../Globals';
-import { IDropdownOption } from '@fluentui/react';
+import { DefaultButton, Icon, IDropdownOption } from '@fluentui/react';
 import FilterForm from './FilterForm';
 import { SessionController } from '../SessionController';
 import { TermSet, TermSetError } from '../interfaces/ITermSet';
@@ -46,6 +46,14 @@ const languageRequirementListFr: IDropdownOption[] = [];
 export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> {
   strings = Globals.getStrings();
   sp!: SPFI;
+
+  buttonStyle = {
+    fontSize: '16px',
+    minWidth: '25px',
+    minHeight: '25px',
+    border: '0',
+    color: 'black'
+  };
 
   public constructor(props: ISpfxCmFiltersProps, state: ISpfxCmFiltersProps){ 
     super(props); 
@@ -232,29 +240,49 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
       hasTeamsContext
     } = this.props;
 
+    const open = Globals.isOpen();
+
     return (
       <section className={`${styles.spfxCmFilters} ${hasTeamsContext ? styles.teams : ''}`}>
-        <div className={styles.filtersHeader}>
+        <div className={styles.filtersHeader} style={{paddingBottom: open ? '10px' : '0px', gap: '10px'}}>
           <h2 id='gcx-cm-filter-title'>
             {this.strings.Filters}
           </h2>
+
+          <div style={{float: 'right'}}>
+            <DefaultButton 
+              style={this.buttonStyle} 
+              role='button'
+              aria-label={open ? this.strings.btnExpanderOpen : this.strings.btnExpanderClosed}
+              aria-expanded={open}
+              onClick={() => {
+                Globals.setOpen(!open);
+                this.forceUpdate();
+              }}
+            >
+              <Icon iconName={open ? 'ChevronUp' : 'ChevronDown'} />
+            </DefaultButton>
+          </div>
         </div>
-        <FilterForm
-          jobTypeListEn={jobTypeListEn}
-          jobTypeListFr={jobTypeListFr}
-          classificationCodeListEn={classificationCodeListEn}
-          classificationCodeListFr={classificationCodeListFr}
-          classificationLevelListEn={classificationLevelListEn}
-          classificationLevelListFr={classificationLevelListFr}
-          departmentListEn={departmentListEn}
-          departmentListFr={departmentListFr}
-          workArrangementListEn={workArrangementListEn}
-          workArrangementListFr={workArrangementListFr}
-          cityListEn={cityListEn}
-          cityListFr={cityListFr}
-          languageRequirementListEn={languageRequirementListEn}
-          languageRequirementListFr={languageRequirementListFr}
-        />
+
+        <div style={{display: open ? 'block' : 'none'}}>
+          <FilterForm
+            jobTypeListEn={jobTypeListEn}
+            jobTypeListFr={jobTypeListFr}
+            classificationCodeListEn={classificationCodeListEn}
+            classificationCodeListFr={classificationCodeListFr}
+            classificationLevelListEn={classificationLevelListEn}
+            classificationLevelListFr={classificationLevelListFr}
+            departmentListEn={departmentListEn}
+            departmentListFr={departmentListFr}
+            workArrangementListEn={workArrangementListEn}
+            workArrangementListFr={workArrangementListFr}
+            cityListEn={cityListEn}
+            cityListFr={cityListFr}
+            languageRequirementListEn={languageRequirementListEn}
+            languageRequirementListFr={languageRequirementListFr}
+          />
+        </div>
       </section>
     );
   }

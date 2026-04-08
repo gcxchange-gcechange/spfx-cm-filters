@@ -24,7 +24,6 @@ declare interface ISpfxCmFiltersWebPartStrings {
   opportunityDetails: string;
   location: string;
   requirements: string;
-
   classification: string;
   classificationLevel: string;
   department: string;
