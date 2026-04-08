@@ -354,14 +354,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     }
   };
 
-  const CalcComponentWidth = (numberOfItems: number, gap: number = 10): React.CSSProperties => {
-    const totalGap = numberOfItems > 1 ? gap * (numberOfItems - 1) : 0;
-    return {
-      width: `calc((100% - ${totalGap}px) / ${numberOfItems})`,
-      maxWidth: `calc((100% - ${totalGap}px) / ${numberOfItems})`
-    };
-  }
-
   const disabledClearFilter = (
     selectedJobTypes.length + 
     selectedClassificationCodes.length + 
@@ -386,7 +378,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           </Stack>
 
           <div className={styles.row}>
-            <div style={CalcComponentWidth(4)}>
+            <div>
               <Dropdown 
                 id='ddJobTypeFilter' 
                 aria-labelledby={strings.jobType}
@@ -410,7 +402,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 calloutProps={{styles: calloutStyles}}
               />
             </div>
-            <div style={CalcComponentWidth(4)}>
+            <div>
               <ComboBox 
                 id='ddClassificationCodeFilter' 
                 aria-label={strings.classification}
@@ -432,7 +424,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 calloutProps={{styles: calloutStyles}}
               />
             </div>
-            <div style={CalcComponentWidth(4)}>
+            <div>
               <Dropdown 
                 id='ddClassificationLevelFilter' 
                 aria-labelledby={strings.classificationLevel}
@@ -456,7 +448,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 calloutProps={{styles: calloutStyles}}
               />
             </div>
-            <div style={CalcComponentWidth(4)}>
+            <div>
               <ComboBox 
                 id='ddDepartmentFilter' 
                 aria-label={strings.department}
@@ -490,7 +482,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           </Stack>
 
           <div className={styles.row}>
-            <div style={CalcComponentWidth(4)}>
+            <div>
               <Dropdown 
                 id='ddWorkArrangementFilter' 
                 aria-label={strings.workArrangement}
@@ -514,7 +506,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 calloutProps={{styles: calloutStyles}}
               />
             </div>
-            <div style={CalcComponentWidth(4)}>
+            <div>
               <ComboBox 
                 id='ddCityFilter' 
                 aria-label={strings.city}
@@ -547,8 +539,8 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             </div>
           </Stack>
 
-          <div>
-            <div style={CalcComponentWidth(4)}>
+          <div className={styles.row}>
+            <div>
               <Dropdown 
                 id='ddLanguageRequirementsFilter' 
                 aria-label={strings.languageRequirement}

@@ -31,6 +31,11 @@
       flex-direction: 'row';
       gap: 10px;
       justify-content: 'flex-start';
+
+      >div {
+        width: calc((100% - calc(10px * 3)) / 4);
+        max-width: calc((100% - calc(10px * 3)) / 4);
+      }
     }
   }
 
