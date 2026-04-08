@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import { ComboBox, DefaultButton, Dropdown, ICalloutContentStyles, IComboBox, IComboBoxOption, IComboBoxStyles, Icon, IconButton, IDropdownOption, IDropdownStyles, PrimaryButton, Stack } from "@fluentui/react";
+import { ComboBox, DefaultButton, Dropdown, IButtonStyles, ICalloutContentStyles, IComboBox, IComboBoxOption, IComboBoxStyles, Icon, IconButton, IDropdownOption, IDropdownStyles, PrimaryButton, Stack } from "@fluentui/react";
 import * as React from "react";
 import { Globals, Language } from "../Globals";
 import styles from './SpfxCmFilters.module.scss';
@@ -140,7 +140,8 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     const isMatchCities = selectedCities.length === appliedCities.current.length &&
       selectedCities.every(val => appliedCities.current.indexOf(val) !== -1);
 
-    const isMatchLanguageRequirements = selectedLanguageRequirements === appliedLanguageRequirements.current;
+    const isMatchLanguageRequirements = selectedLanguageRequirements === appliedLanguageRequirements.current 
+      || selectedLanguageRequirements === '' && appliedLanguageRequirements.current === undefined;
 
     const selectedMatchesApplied = isMatchJobType 
     && isMatchClassificationCodes
@@ -339,12 +340,26 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     }
   }
 
-  const CalcComponentWidth = (numberOfItems: number, gap: number = 10): React.CSSProperties => {
-    gap = numberOfItems <= 1 ? 0 : gap;
-    return {
-      width: `calc((100% - ${gap}px) / ${numberOfItems}`,
-      maxWidth: `calc((100% - ${gap}px) / ${numberOfItems}`
+  const defaultButtonStyles: Partial<IButtonStyles> = {
+    root: {
+      backgroundColor: '#dae8e8',
+      color: '#044D4D',
+      borderColor: '#044D4D'
+    },
+    rootHovered: {
+      backgroundColor: '#d6e2e2'
+    },
+    rootPressed: {
+      backgroundColor: '#c5d1d1'
     }
+  };
+
+  const CalcComponentWidth = (numberOfItems: number, gap: number = 10): React.CSSProperties => {
+    const totalGap = numberOfItems > 1 ? gap * (numberOfItems - 1) : 0;
+    return {
+      width: `calc((100% - ${totalGap}px) / ${numberOfItems})`,
+      maxWidth: `calc((100% - ${totalGap}px) / ${numberOfItems})`
+    };
   }
 
   const disabledClearFilter = (
@@ -477,7 +492,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           </Stack>
 
           <div className={styles.row}>
-            <div style={CalcComponentWidth(2)}>
+            <div style={CalcComponentWidth(4)}>
               <Dropdown 
                 id='ddWorkArrangementFilter' 
                 aria-label={strings.workArrangement}
@@ -501,7 +516,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 calloutProps={{styles: calloutStyles}}
               />
             </div>
-            <div style={CalcComponentWidth(2)}>
+            <div style={CalcComponentWidth(4)}>
               <ComboBox 
                 id='ddCityFilter' 
                 aria-label={strings.city}
@@ -535,8 +550,8 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             </div>
           </Stack>
 
-          <Stack horizontal tokens={{ childrenGap: 10 }}>
-            <Stack grow styles={{ root: { minWidth: 0 } }}>
+          <div>
+            <div style={CalcComponentWidth(4)}>
               <Dropdown 
                 id='ddLanguageRequirementsFilter' 
                 aria-label={strings.languageRequirement}
@@ -555,8 +570,8 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 multiSelect={false}
                 calloutProps={{styles: calloutStyles}}
               />
-            </Stack>
-          </Stack>
+            </div>
+          </div>
         </Stack>
 
         {/* CHIP LIST */}
@@ -570,6 +585,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           id='gcx-cm-filter-clear'
           aria-describedby='gcx-cm-filter-title'
           aria-label={strings.clear}
+          styles={defaultButtonStyles}
           disabled={disabledClearFilter}
           onClick={() => {
             ClearValues();
