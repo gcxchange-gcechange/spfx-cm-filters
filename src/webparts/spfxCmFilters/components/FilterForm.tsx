@@ -425,7 +425,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                     : selectedClassificationCodes.filter(key => key !== option.key);
 
                   setSelectedClassificationCodes(newSelectedKeys);
-                  (e.target as HTMLElement)?.blur();
                 }}
                 selectedKey={selectedClassificationCodes}
                 multiSelect={true}
@@ -472,7 +471,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                     : selectedDepartments.filter(key => key !== option.key);
 
                   setSelectedDepartments(newSelectedKeys);
-                  (e.target as HTMLElement)?.blur();
                 }}
                 selectedKey={selectedDepartments}
                 multiSelect={true}
@@ -531,7 +529,6 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                     : selectedCities.filter(key => key !== option.key);
 
                   setSelectedCities(newSelectedKeys);
-                  (e.target as HTMLElement)?.blur();
                 }}
                 selectedKey={selectedCities}
                 multiSelect={true}
