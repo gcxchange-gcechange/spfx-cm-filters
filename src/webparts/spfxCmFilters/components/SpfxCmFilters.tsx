@@ -147,8 +147,8 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
         workArrangementListFr.length = 0;
 
         (workArrangementResponse as IListItem[]).forEach((item) => {
-          workArrangementListEn.push({key: item.ID, text: item.NameEn});
-          workArrangementListFr.push({key: item.ID, text: reacthandler.decode(item.NameFr)});
+          workArrangementListEn.push({key: item.NameEn, text: item.NameEn});
+          workArrangementListFr.push({key: item.NameEn, text: reacthandler.decode(item.NameFr)});
         });
 
         workArrangementListEn.sort((a, b) => a.text.localeCompare(b.text));
@@ -183,8 +183,11 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
                 }
               }
 
-              cityListEn.push({key: item.ID, text: `${item.NameEn}, ${item.Region.NameEn}, ${provinceEn}`});
-              cityListFr.push({key: item.ID, text: reacthandler.decode(`${item.NameFr}, ${item.Region.NameFr}, ${provinceFr}`)});
+              const finalTextEn = `${item.NameEn}, ${item.Region.NameEn}, ${provinceEn}`.trim();
+              const finalTextFr = reacthandler.decode(`${item.NameFr}, ${item.Region.NameFr}, ${provinceFr}`.trim());
+
+              cityListEn.push({key: item.ID, text: finalTextEn});
+              cityListFr.push({key: item.ID, text: finalTextFr});
             });
 
             cityListEn.sort((a, b) => a.text.localeCompare(b.text));
