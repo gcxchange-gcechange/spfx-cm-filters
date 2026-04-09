@@ -3,6 +3,8 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
   type IPropertyPaneConfiguration,
+  IPropertyPaneDropdownOption,
+  PropertyPaneDropdown,
   PropertyPaneTextField,
   PropertyPaneToggle
 } from '@microsoft/sp-property-pane';
@@ -20,7 +22,19 @@ export interface ISpfxCmFiltersWebPartProps {
   debug: boolean;
   cacheTime: number;
   jobTypeTermSetGuid: string;
-  // programAreaTermSetGuid: string;
+  ClassificationCodeKey: CrawledPropertyOption;
+  ClassificationLevelKey: CrawledPropertyOption;
+  DepartmentKey: CrawledPropertyOption;
+  WorkArrangementKey: CrawledPropertyOption;
+  CityKey: CrawledPropertyOption;
+  LanguageRequirementKey: CrawledPropertyOption;
+}
+
+export enum CrawledPropertyOption {
+  ID = "ID",
+  Id = "Id",
+  NameEn = "NameEn",
+  NameFr = "NameFr"
 }
 
 export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmFiltersWebPartProps> {
@@ -56,7 +70,13 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
         language: this.properties.language,
         debug: this.properties.debug,
         cacheTime: this.properties.cacheTime,
-        jobTypeTermSetGuid: this.properties.jobTypeTermSetGuid
+        jobTypeTermSetGuid: this.properties.jobTypeTermSetGuid,
+        ClassificationCodeKey: this.properties.ClassificationCodeKey,
+        ClassificationLevelKey: this.properties.ClassificationLevelKey,
+        DepartmentKey: this.properties.DepartmentKey,
+        WorkArrangementKey: this.properties.WorkArrangementKey,
+        CityKey: this.properties.CityKey,
+        LanguageRequirementKey: this.properties.LanguageRequirementKey
       }
     );
 
@@ -64,6 +84,14 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
   }
 
   protected onInit(): Promise<void> {
+    this.properties.language ??= Language.English;
+    this.properties.ClassificationCodeKey ??= CrawledPropertyOption.ID;
+    this.properties.ClassificationLevelKey ??= CrawledPropertyOption.ID;
+    this.properties.DepartmentKey ??= CrawledPropertyOption.ID;
+    this.properties.WorkArrangementKey ??= CrawledPropertyOption.ID;
+    this.properties.CityKey ??= CrawledPropertyOption.ID;
+    this.properties.LanguageRequirementKey ??= CrawledPropertyOption.ID;
+
     Globals.setLanguage(this.properties.language);
     Globals.setCacheTime(this.properties.cacheTime ? this.properties.cacheTime : 30);
     Globals.setDebugMode(this.properties.debug);
@@ -131,6 +159,13 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
     return Version.parse('1.0');
   }
 
+  private getCrawledPropertyOption(): IPropertyPaneDropdownOption[] {
+    return (Object.keys(CrawledPropertyOption) as Array<keyof typeof CrawledPropertyOption>).map((key) => ({
+      key: CrawledPropertyOption[key],
+      text: CrawledPropertyOption[key]
+    }));
+  }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
@@ -144,13 +179,43 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
               groupFields: [
                 PropertyPaneTextField('language', {
                   label: 'Language',
-                  value: Globals.getLanguage(),
+                  value: Globals.getLanguage() || Language.English,
                   placeholder: `${Language.English} or ${Language.French}`
                 }),
                 PropertyPaneTextField('jobTypeTermSetGuid', {
                   label: 'JobType term set GUID',
                   value: Globals.getJobTypeTermSetGuid(),
                   placeholder: '45f37f08-3ff4-4d84-bf21-4a77ddffcf3e'
+                }),
+                PropertyPaneDropdown('ClassificationCodeKey', {
+                  label: 'Classification Code Key',
+                  options: this.getCrawledPropertyOption(),
+                  selectedKey: this.properties.ClassificationCodeKey || CrawledPropertyOption.ID
+                }),
+                PropertyPaneDropdown('ClassificationLevelKey', {
+                  label: 'Classification Level Key',
+                  options: this.getCrawledPropertyOption(),
+                  selectedKey: this.properties.ClassificationLevelKey || CrawledPropertyOption.ID
+                }),
+                PropertyPaneDropdown('DepartmentKey', {
+                  label: 'Department Key',
+                  options: this.getCrawledPropertyOption(),
+                  selectedKey: this.properties.DepartmentKey || CrawledPropertyOption.ID
+                }),
+                PropertyPaneDropdown('WorkArrangementKey', {
+                  label: 'Work Arrangement Key',
+                  options: this.getCrawledPropertyOption(),
+                  selectedKey: this.properties.WorkArrangementKey || CrawledPropertyOption.NameEn
+                }),
+                PropertyPaneDropdown('CityKey', {
+                  label: 'City Key',
+                  options: this.getCrawledPropertyOption(),
+                  selectedKey: this.properties.CityKey || CrawledPropertyOption.ID
+                }),
+                PropertyPaneDropdown('LanguageRequirementKey', {
+                  label: 'Language Requirement Key',
+                  options: this.getCrawledPropertyOption(),
+                  selectedKey: this.properties.LanguageRequirementKey || CrawledPropertyOption.ID
                 }),
                 PropertyPaneTextField('cacheTime', {
                   label: 'Cache Time',
@@ -167,7 +232,7 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
                 PropertyPaneToggle('debug', {
                   label: 'Debug',
                   checked: Globals.isDebugMode()
-                })
+                }),
               ]
             }
           ]

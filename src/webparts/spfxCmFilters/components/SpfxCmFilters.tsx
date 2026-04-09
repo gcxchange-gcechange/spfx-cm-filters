@@ -13,6 +13,7 @@ import "@pnp/sp/items";
 import { SPFI } from '@pnp/sp';
 import { getSP } from '../../../pnpjsConfig';
 import { ICityItem, IListItem, IRegionItem } from '../interfaces/IListItem';
+import { CrawledPropertyOption } from '../SpfxCmFiltersWebPart';
 
 const jobTypeCtrl = new SessionController<TermSet | TermSetError>('gcx-cm-jobTypeList');
 const jobTypeListEn: IDropdownOption[] = [];
@@ -93,8 +94,21 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
         classificationCodeListFr.length = 0;
 
         (classCodeResponse as IListItem[]).forEach((item) => {
-          classificationCodeListEn.push({key: item.ID, text: item.NameEn});
-          classificationCodeListFr.push({key: item.ID, text: reacthandler.decode(item.NameFr)});
+          switch(this.props.ClassificationCodeKey) {
+            case CrawledPropertyOption.ID:
+            case CrawledPropertyOption.Id:
+              classificationCodeListEn.push({key: item[this.props.ClassificationCodeKey], text: item.NameEn});
+              classificationCodeListFr.push({key: item[this.props.ClassificationCodeKey], text: reacthandler.decode(item.NameFr)});
+              break;
+            case CrawledPropertyOption.NameEn:
+            case CrawledPropertyOption.NameFr:
+              classificationCodeListEn.push({key: `"${item[this.props.ClassificationCodeKey]}"`, text: item.NameEn});
+              classificationCodeListFr.push({key: `"${item[this.props.ClassificationCodeKey]}"`, text: reacthandler.decode(item.NameFr)});
+              break;
+            default:
+              console.error(`Unknown ClassificationCodeKey: ${this.props.ClassificationCodeKey}`);
+              break;
+          }
         });
 
         classificationCodeListEn.sort((a, b) => a.text.localeCompare(b.text));
@@ -111,8 +125,21 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
         classificationLevelListFr.length = 0;
 
         (classLevelResponse as IListItem[]).forEach((item) => {
-          classificationLevelListEn.push({key: item.ID, text: item.NameEn});
-          classificationLevelListFr.push({key: item.ID, text: reacthandler.decode(item.NameFr)});
+          switch(this.props.ClassificationLevelKey) {
+            case CrawledPropertyOption.ID:
+            case CrawledPropertyOption.Id:
+              classificationLevelListEn.push({key: item[this.props.ClassificationLevelKey], text: item.NameEn});
+              classificationLevelListFr.push({key: item[this.props.ClassificationLevelKey], text: reacthandler.decode(item.NameFr)});
+              break;
+            case CrawledPropertyOption.NameEn:
+            case CrawledPropertyOption.NameFr:
+              classificationLevelListEn.push({key: `"${item[this.props.ClassificationLevelKey]}"`, text: item.NameEn});
+              classificationLevelListFr.push({key: `"${item[this.props.ClassificationLevelKey]}"`, text: reacthandler.decode(item.NameFr)});
+              break;
+            default:
+              console.error(`Unknown ClassificationLevelKey: ${this.props.ClassificationLevelKey}`);
+              break;
+          }
         });
 
         classificationLevelListEn.sort((a, b) => a.text.localeCompare(b.text));
@@ -129,8 +156,21 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
         departmentListFr.length = 0;
 
         (departmentResponse as IListItem[]).forEach((item) => {
-          departmentListEn.push({key: item.ID, text: item.NameEn});
-          departmentListFr.push({key: item.ID, text: reacthandler.decode(item.NameFr)});
+          switch(this.props.DepartmentKey) {
+            case CrawledPropertyOption.ID:
+            case CrawledPropertyOption.Id:
+              departmentListEn.push({key: item[this.props.DepartmentKey], text: item.NameEn});
+              departmentListFr.push({key: item[this.props.DepartmentKey], text: reacthandler.decode(item.NameFr)});
+              break;
+            case CrawledPropertyOption.NameEn:
+            case CrawledPropertyOption.NameFr:
+              departmentListEn.push({key: `"${item[this.props.DepartmentKey]}"`, text: item.NameEn});
+              departmentListFr.push({key: `"${item[this.props.DepartmentKey]}"`, text: reacthandler.decode(item.NameFr)});
+              break;
+            default:
+              console.error(`Unknown DepartmentKey: ${this.props.DepartmentKey}`);
+              break;
+          }
         });
 
         departmentListEn.sort((a, b) => a.text.localeCompare(b.text));
@@ -147,8 +187,21 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
         workArrangementListFr.length = 0;
 
         (workArrangementResponse as IListItem[]).forEach((item) => {
-          workArrangementListEn.push({key: item.NameEn, text: item.NameEn});
-          workArrangementListFr.push({key: item.NameEn, text: reacthandler.decode(item.NameFr)});
+          switch(this.props.WorkArrangementKey) {
+            case CrawledPropertyOption.ID:
+            case CrawledPropertyOption.Id:
+              workArrangementListEn.push({key: item[this.props.WorkArrangementKey], text: item.NameEn});
+              workArrangementListFr.push({key: item[this.props.WorkArrangementKey], text: reacthandler.decode(item.NameFr)});
+              break;
+            case CrawledPropertyOption.NameEn:
+            case CrawledPropertyOption.NameFr:
+              workArrangementListEn.push({key: `"${item[this.props.WorkArrangementKey]}"`, text: item.NameEn});
+              workArrangementListFr.push({key: `"${item[this.props.WorkArrangementKey]}"`, text: reacthandler.decode(item.NameFr)});
+              break;
+            default:
+              console.error(`Unknown WorkArrangementKey: ${this.props.WorkArrangementKey}`);
+              break;
+          }
         });
 
         workArrangementListEn.sort((a, b) => a.text.localeCompare(b.text));
@@ -186,8 +239,21 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
               const finalTextEn = `${item.NameEn}, ${item.Region.NameEn}, ${provinceEn}`.trim();
               const finalTextFr = reacthandler.decode(`${item.NameFr}, ${item.Region.NameFr}, ${provinceFr}`.trim());
 
-              cityListEn.push({key: item.ID, text: finalTextEn});
-              cityListFr.push({key: item.ID, text: finalTextFr});
+              switch(this.props.CityKey) {
+                case CrawledPropertyOption.ID:
+                case CrawledPropertyOption.Id:
+                  cityListEn.push({key: item[this.props.CityKey], text: finalTextEn});
+                  cityListFr.push({key: item[this.props.CityKey], text: finalTextFr});
+                  break;
+                case CrawledPropertyOption.NameEn:
+                case CrawledPropertyOption.NameFr:
+                  cityListEn.push({key: `"${item[this.props.CityKey]}"`, text: finalTextEn});
+                  cityListFr.push({key: `"${item[this.props.CityKey]}"`, text: finalTextFr});
+                  break;
+                default:
+                  console.error(`Unknown CityKey: ${this.props.CityKey}`);
+                  break;
+              }
             });
 
             cityListEn.sort((a, b) => a.text.localeCompare(b.text));
@@ -208,6 +274,22 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
         (languageRequirementResponse as IListItem[]).forEach((item) => {
           languageRequirementListEn.push({key: item.ID, text: item.NameEn});
           languageRequirementListFr.push({key: item.ID, text: reacthandler.decode(item.NameFr)});
+
+          switch(this.props.LanguageRequirementKey) {
+            case CrawledPropertyOption.ID:
+            case CrawledPropertyOption.Id:
+              languageRequirementListEn.push({key: item[this.props.LanguageRequirementKey], text: item.NameEn});
+              languageRequirementListFr.push({key: item[this.props.LanguageRequirementKey], text: reacthandler.decode(item.NameFr)});
+              break;
+            case CrawledPropertyOption.NameEn:
+            case CrawledPropertyOption.NameFr:
+              languageRequirementListEn.push({key: `"${item[this.props.LanguageRequirementKey]}"`, text: item.NameEn});
+              languageRequirementListFr.push({key: `"${item[this.props.LanguageRequirementKey]}"`, text: reacthandler.decode(item.NameFr)});
+              break;
+            default:
+              console.error(`Unknown LanguageRequirementKey: ${this.props.LanguageRequirementKey}`);
+              break;
+          }
         });
 
         languageRequirementListEn.sort((a, b) => a.text.localeCompare(b.text));
