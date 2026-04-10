@@ -2,9 +2,12 @@
 
 ## Summary
 
-- The webpart is used to filter JobOpportunities for GCX Career Marketplace.
-- Pulls all the JobType and ProgramArea list items of the site where the webpart is deployed.
-- Config requires the Term Set GUID for `JobType` and `ProgramArea` are set. You can find these in the term store.
+The webpart is used to filter JobOpportunities for GCX Career Marketplace.
+
+- Pulls the `JobType` term set
+- Pulls the following lookup lists: `ClassificationCode`, `ClassificationLevel`, `Department`, `WorkArrangement`, `City/Region/Province`, `LanguageRequirements`
+- Config requires the Term Set GUID for `JobType`. You can find this in the term store.
+- Config allows you to set which crawled property you've mapped to your managed property for the column being filtered. The options are `ID`, `Id`, `NameEn`, and `NameFr`. If you have issues with filters not working please check the search schema to verify that the managed property uses the crawled property you've selected in this web part.
 - Data is cached to localStorage for a certain amount of minutes which is set by the `Cache Time` property in the web part configuration.
 - Supports English and French by setting the `Language` property in the web part configuration.
 - Turn debugging on/off by toggling the `Debug` property in the web part configuration.

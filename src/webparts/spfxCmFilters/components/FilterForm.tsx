@@ -1,64 +1,113 @@
 /* eslint-disable react/jsx-key */
-import { DatePicker, DefaultButton, Dropdown, ICalloutContentStyles, Icon, IconButton, IDatePickerStyleProps, IDatePickerStyles, IDropdownOption, IDropdownStyles, IStyleFunctionOrObject, PrimaryButton, Stack } from "@fluentui/react";
+import { ComboBox, DefaultButton, Dropdown, IButtonStyles, ICalloutContentStyles, IComboBox, IComboBoxOption, IComboBoxStyles, Icon, IconButton, IDropdownOption, IDropdownStyles, PrimaryButton, Stack } from "@fluentui/react";
 import * as React from "react";
 import { Globals, Language } from "../Globals";
 import styles from './SpfxCmFilters.module.scss';
+import { IChipItem } from "../interfaces/IChipItem";
 
 export interface ISearchFormProps {
   jobTypeListEn: IDropdownOption[];
   jobTypeListFr: IDropdownOption[];
-  // programAreaListEn: IDropdownOption[];
-  // programAreaListFr: IDropdownOption[];
+  classificationCodeListEn: IDropdownOption[];
+  classificationCodeListFr: IDropdownOption[];
+  classificationLevelListEn: IDropdownOption[];
+  classificationLevelListFr: IDropdownOption[];
+  departmentListEn: IDropdownOption[];
+  departmentListFr: IDropdownOption[];
+  workArrangementListEn: IDropdownOption[];
+  workArrangementListFr: IDropdownOption[];
+  cityListEn: IDropdownOption[];
+  cityListFr: IDropdownOption[];
+  languageRequirementListEn: IDropdownOption[];
+  languageRequirementListFr: IDropdownOption[];
 }
 
 export enum FilterSessionKeys {
   Initialized = 'gcx-cm-filter-init',
   JobType = 'gcx-cm-filter-jobType',
-  ProgramArea = 'gcx-cm-filter-programArea',
-  ApplicationDeadline = 'gcx-cm-filter-applicationDeadline'
+  ClassificationCode = 'gcx-cm-filter-classificationCode',
+  ClassificationLevel = 'gcx-cm-filter-clasificationLevel',
+  Department = 'gcx-cm-filter-department',
+  WorkArrangement = 'gcx-cm-filter-workArrangement',
+  City = 'gcx-cm-filter-city',
+  LanguageRequirement = 'gcx-cm-filter-languageRequirement'
 }
 
 const FilterForm = (props: ISearchFormProps): JSX.Element => {
   const strings = Globals.getStrings();
 
   const [selectedJobTypes, setSelectedJobTypes] = React.useState<string[]>([]);
-  // const [selectedProgramAreas, setSelectedProgramAreas] = React.useState<string[]>([]);
-  const [applicationDeadline, setApplicationDeadline] = React.useState('');
+  const [selectedClassificationCodes, setSelectedClassificationCodes] = React.useState<string[]>([]);
+  const [selectedClassificationLevels, setSelectedClassificationLevels] = React.useState<string[]>([]);
+  const [selectedDepartments, setSelectedDepartments] = React.useState<string[]>([]);
+  const [selectedWorkArrangements, setSelectedWorkArrangements] = React.useState<string[]>([]);
+  const [selectedCities, setSelectedCities] = React.useState<string[]>([]);
+  const [selectedLanguageRequirements, setSelectedLanguageRequirements] = React.useState<string>('');
+
   const [disableApply, setDisableApply] = React.useState(true);
 
   const appliedJobTypes = React.useRef<string[]>([]);
-  // const appliedProgramAreas = React.useRef<string[]>([]);
-  const appliedApplicationDeadline = React.useRef<string>('');
+  const appliedClassificationCodes = React.useRef<string[]>([]);
+  const appliedClassificationLevels = React.useRef<string[]>([]);
+  const appliedDepartments = React.useRef<string[]>([]);
+  const appliedWorkArrangements = React.useRef<string[]>([]);
+  const appliedCities = React.useRef<string[]>([]);
+  const appliedLanguageRequirements = React.useRef<string>();
 
   const SetSessionKeys = (): void => {
     const jobTypes = selectedJobTypes.join(',');
-    // const programAreas = selectedProgramAreas.join(',');
+    const classificationCodes = selectedClassificationCodes.join(',');
+    const classificationLevels = selectedClassificationLevels.join(',');
+    const departments = selectedDepartments.join(',');
+    const workArrangements = selectedWorkArrangements.join(',');
+    const cities = selectedCities.join(',');
+    const languageRequirements = selectedLanguageRequirements;
 
     sessionStorage.setItem(FilterSessionKeys.JobType, jobTypes === undefined ? '' : jobTypes);
-    // sessionStorage.setItem(FilterSessionKeys.ProgramArea, programAreas === undefined ? '' : programAreas);
-    sessionStorage.setItem(FilterSessionKeys.ApplicationDeadline, applicationDeadline);
+    sessionStorage.setItem(FilterSessionKeys.ClassificationCode, classificationCodes === undefined ? '' : classificationCodes);
+    sessionStorage.setItem(FilterSessionKeys.ClassificationLevel, classificationLevels === undefined ? '' : classificationLevels);
+    sessionStorage.setItem(FilterSessionKeys.Department, departments === undefined ? '' : departments);
+    sessionStorage.setItem(FilterSessionKeys.WorkArrangement, workArrangements === undefined ? '' : workArrangements);
+    sessionStorage.setItem(FilterSessionKeys.City, cities === undefined ? '' : cities);
+    sessionStorage.setItem(FilterSessionKeys.LanguageRequirement, languageRequirements === undefined ? '' : languageRequirements);
 
     appliedJobTypes.current = [...selectedJobTypes];
-    // appliedProgramAreas.current = [...selectedProgramAreas];
-    appliedApplicationDeadline.current = applicationDeadline;
+    appliedClassificationCodes.current = [...selectedClassificationCodes];
+    appliedClassificationLevels.current = [...selectedClassificationLevels];
+    appliedDepartments.current = [...selectedDepartments];
+    appliedWorkArrangements.current = [...selectedWorkArrangements];
+    appliedCities.current = [...selectedCities];
+    appliedLanguageRequirements.current = selectedLanguageRequirements;
 
     setDisableApply(true);
 
     if (Globals.isDebugMode()) {
-      console.log('\njobType: ' + jobTypes);
-      // console.log('programArea: ' + programAreas);
-      console.log('applicationDeadline: ' + applicationDeadline);
+      console.log('\nJobTypes: ' + jobTypes);
+      console.log('ClassificationCodes: ' + classificationCodes);
+      console.log('ClassificationLevels: ' + classificationLevels);
+      console.log('Departments: ' + departments);
+      console.log('WorkArrangements: ' + workArrangements);
+      console.log('Cities: ' + cities);
+      console.log('LanguageRequirements: ' + languageRequirements);
     }
   }
 
   const ClearValues = (): void => {
     appliedJobTypes.current = [];
-    // appliedProgramAreas.current = [];
-    appliedApplicationDeadline.current = '';
+    appliedClassificationCodes.current = [];
+    appliedClassificationLevels.current = [];
+    appliedDepartments.current = [];
+    appliedWorkArrangements.current = [];
+    appliedCities.current = [];
+    appliedLanguageRequirements.current = '';
 
     setSelectedJobTypes([]);
-    // setSelectedProgramAreas([]);
-    setApplicationDeadline(''); 
+    setSelectedClassificationCodes([]);
+    setSelectedClassificationLevels([]);
+    setSelectedDepartments([]);
+    setSelectedWorkArrangements([]);
+    setSelectedCities([]);
+    setSelectedLanguageRequirements('');
   }
 
   React.useEffect(() => {
@@ -74,57 +123,165 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
 
   React.useEffect(() => {
     const isMatchJobType = selectedJobTypes.length === appliedJobTypes.current.length &&
-      selectedJobTypes.every(val => appliedJobTypes.current.indexOf(val) !== -1)
-  
-    // const isMatchProgramArea = selectedProgramAreas.length === appliedProgramAreas.current.length &&
-    //   selectedProgramAreas.every(val => appliedProgramAreas.current.indexOf(val) !== -1)
+      selectedJobTypes.every(val => appliedJobTypes.current.indexOf(val) !== -1);
 
-    const isMatchDeadline = applicationDeadline === appliedApplicationDeadline.current;
+    const isMatchClassificationCodes = selectedClassificationCodes.length === appliedClassificationCodes.current.length &&
+      selectedClassificationCodes.every(val => appliedClassificationCodes.current.indexOf(val) !== -1);
+
+    const isMatchClassificationLevels = selectedClassificationLevels.length === appliedClassificationLevels.current.length &&
+      selectedClassificationLevels.every(val => appliedClassificationLevels.current.indexOf(val) !== -1);
+
+    const isMatchDepartments = selectedDepartments.length === appliedDepartments.current.length &&
+      selectedDepartments.every(val => appliedDepartments.current.indexOf(val) !== -1);
+
+    const isMatchWorkArrangements = selectedWorkArrangements.length === appliedWorkArrangements.current.length &&
+      selectedWorkArrangements.every(val => appliedWorkArrangements.current.indexOf(val) !== -1);
+
+    const isMatchCities = selectedCities.length === appliedCities.current.length &&
+      selectedCities.every(val => appliedCities.current.indexOf(val) !== -1);
+
+    const isMatchLanguageRequirements = selectedLanguageRequirements === appliedLanguageRequirements.current 
+      || selectedLanguageRequirements === '' && appliedLanguageRequirements.current === undefined;
 
     const selectedMatchesApplied = isMatchJobType 
-    // && isMatchProgramArea 
-    && isMatchDeadline;
+      && isMatchClassificationCodes
+      && isMatchClassificationLevels
+      && isMatchDepartments
+      && isMatchWorkArrangements
+      && isMatchCities
+      && isMatchLanguageRequirements;
     
     setDisableApply(selectedMatchesApplied);
 
     const allCleared = selectedJobTypes.length === 0 
-    // && selectedProgramAreas.length === 0 
-    && applicationDeadline === '';
+      && selectedClassificationCodes.length === 0
+      && selectedClassificationLevels.length === 0
+      && selectedDepartments.length === 0
+      && selectedWorkArrangements.length === 0
+      && selectedCities.length === 0
+      && selectedLanguageRequirements === '';
 
     if (allCleared && selectedMatchesApplied) {
       SetSessionKeys();
     }
   }, [selectedJobTypes, 
-      // selectedProgramAreas, 
-      applicationDeadline]);
+      selectedClassificationCodes, 
+      selectedClassificationLevels,
+      selectedDepartments,
+      selectedWorkArrangements,
+      selectedCities,
+      selectedLanguageRequirements
+     ]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  const TermChipList = (originalList: IDropdownOption[], selectedTerms: string[], updateFunc: Function, label: string, labeledBy: string): JSX.Element => {
-    const chips = originalList.filter(term1 =>
-      selectedTerms.some(term2 => term2 === term1.key)
-    );
+  const getAllSelectedChips = (): IChipItem[] => {
+    const jobTypeOptions = Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn;
+    const jobTypeChips = jobTypeOptions
+    .filter(opt => selectedJobTypes.indexOf(opt.key as string) !== -1)
+    .map(opt => ({
+      key: opt.key as string,
+      text: opt.text,
+      source: strings.jobType
+    }));
 
-    const selectedLabelId = `fId${label.replace(/\s+/g, '')}`;
+    const classificationOptions = Globals.getLanguage() === Language.French ? props.classificationCodeListFr : props.classificationCodeListEn;
+    const classificationChips = classificationOptions
+    .filter(opt => selectedClassificationCodes.indexOf(opt.key as string) !== -1)
+    .map(opt => ({
+      key: opt.key as string,
+      text: opt.text,
+      source: strings.classification
+    }));
 
-    return chips.length > 0 ? (
-      <div className={styles.chipContainer} role='group' aria-labelledby={selectedLabelId}>
-        <Stack horizontal className={styles.chipLabel}>
-          <div id={selectedLabelId} aria-labelledby={labeledBy}>
-            {label}
-          </div>
-        </Stack>
-        {chips.map((term, index) => (
-          <div className={styles.chip}>
-            <span>{term.text}</span>
+    const classificationLevelOptions = Globals.getLanguage() === Language.French ? props.classificationLevelListFr : props.classificationLevelListEn;
+    const classificationLevelChips = classificationLevelOptions
+    .filter(opt => selectedClassificationLevels.indexOf(opt.key as string) !== -1)
+    .map(opt => ({
+      key: opt.key as string,
+      text: opt.text,
+      source: strings.classificationLevel
+    }));
+
+    const departmentOptions = Globals.getLanguage() === Language.French ? props.departmentListFr : props.departmentListEn;
+    const departmentChips = departmentOptions
+    .filter(opt => selectedDepartments.indexOf(opt.key as string) !== -1)
+    .map(opt => ({
+      key: opt.key as string,
+      text: opt.text,
+      source: strings.department
+    }));
+
+    const workArrangementOptions = Globals.getLanguage() === Language.French ? props.workArrangementListFr : props.workArrangementListEn;
+    const workArrangementChips = workArrangementOptions
+    .filter(opt => selectedWorkArrangements.indexOf(opt.key as string) !== -1)
+    .map(opt => ({
+      key: opt.key as string,
+      text: opt.text,
+      source: strings.workArrangement
+    }));
+
+    const cityOptions = Globals.getLanguage() === Language.French ? props.cityListFr : props.cityListEn;
+    const cityChips = cityOptions
+    .filter(opt => selectedCities.indexOf(opt.key as string) !== -1)
+    .map(opt => ({
+      key: opt.key as string,
+      text: opt.text,
+      source: strings.city
+    }));
+
+    const languageRequirementOptions = Globals.getLanguage() === Language.French ? props.languageRequirementListFr : props.languageRequirementListEn;
+    const languageRequirementChips = languageRequirementOptions
+    .filter(opt => selectedLanguageRequirements === opt.key)
+    .map(opt => ({
+      key: opt.key as string,
+      text: opt.text,
+      source: strings.languageRequirement
+    }));
+
+    return [...jobTypeChips, ...classificationChips, ...classificationLevelChips, ...departmentChips, ...workArrangementChips, ...cityChips, ...languageRequirementChips];
+  };
+
+  const SelectedChipList = (): JSX.Element => {
+    const chips = getAllSelectedChips();
+
+    if (chips.length === 0) return <></>;
+    
+    return (
+      <div className={styles.chipContainer}>
+        {chips.map((chip) => (
+          <div className={styles.chip} key={`${chip.source}-${chip.key}`}>
+            <span>{chip.source}: {chip.text}</span>
             <IconButton
-              aria-labelledby={labeledBy}
-              aria-label={`${strings.remove} ${term.text}`}
-              title={`${strings.remove} ${term.text}`}
+              aria-label={`${strings.remove} ${chip.source}: ${chip.text}`}
+              title={`${strings.remove} ${chip.source}: ${chip.text}`}
               onClick={() => {
-                const updatedList = selectedTerms.filter(
-                  item => item !== term.key
-                );
-                updateFunc(updatedList);
+                if (chip.source === strings.jobType) {
+                  setSelectedJobTypes(prev =>
+                    prev.filter(k => k !== chip.key)
+                  );
+                } else if (chip.source === strings.classification) {
+                  setSelectedClassificationCodes(prev =>
+                    prev.filter(k => k !== chip.key)
+                  );
+                } else if (chip.source === strings.classificationLevel) {
+                  setSelectedClassificationLevels(prev =>
+                    prev.filter(k => k !== chip.key)
+                  );
+                } else if (chip.source === strings.department) {
+                  setSelectedDepartments(prev =>
+                    prev.filter(k => k !== chip.key)
+                  );
+                } else if (chip.source === strings.workArrangement) {
+                  setSelectedWorkArrangements(prev =>
+                    prev.filter(k => k !== chip.key)
+                  );
+                } else if (chip.source === strings.city) {
+                  setSelectedCities(prev =>
+                    prev.filter(k => k !== chip.key)
+                  );
+                } else if (chip.source === strings.languageRequirement) {
+                  setSelectedLanguageRequirements('');
+                }
+
                 setDisableApply(false);
               }}
             >
@@ -133,123 +290,283 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           </div>
         ))}
       </div>
-    ) : <></>;
-  }
-
-  const borderColor: string = '#c2c2c2';
-  const datePickerStyles: IStyleFunctionOrObject<IDatePickerStyleProps, IDatePickerStyles> = {
-    textField: {
-      '& .ms-TextField-fieldGroup': {
-        borderColor: borderColor
-      },
-    }
+    );
   };
 
+  const borderColor: string = '#c2c2c2';
   const calloutStyles: Partial<ICalloutContentStyles> = {
+    root: {
+      minWidth: 'fit-content',
+    },
     calloutMain: {
-      overflow: 'auto'
+      width: 'fit-content',
+      minWidth: '100%',
+      maxWidth: 'none'
     },
   };
 
   const dropdownStyles: Partial<IDropdownStyles> = {
+    root: {
+      selectors: {
+        ':hover .ms-Dropdown-title': {
+          borderColor: 'rgb(50, 49, 48) !important',
+        },
+      },
+    },
+    dropdown: {
+      width: '100%'
+    },
+    title: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap'
+    },
     dropdownItem: {
-      width: 'fit-content',
-      minWidth: '100%'
+      whiteSpace: 'normal',
+      wordBreak: 'break-word'
     },
     dropdownItemsWrapper: {
-      width: 'max-content',
       minWidth: '100%'
     }
   };
+
+  const comboBoxStyles: Partial<IComboBoxStyles> = {
+    rootHovered: {
+      selectors: {
+        '::after': {
+          borderColor: 'rgb(50, 49, 48) !important',
+        },
+      },
+    }
+  }
+
+  const defaultButtonStyles: Partial<IButtonStyles> = {
+    root: {
+      backgroundColor: '#dae8e8',
+      color: '#044D4D',
+      borderColor: '#044D4D'
+    },
+    rootHovered: {
+      backgroundColor: '#d6e2e2'
+    },
+    rootPressed: {
+      backgroundColor: '#c5d1d1'
+    }
+  };
+
+  const disabledClearFilter = (
+    selectedJobTypes.length + 
+    selectedClassificationCodes.length + 
+    selectedClassificationLevels.length + 
+    selectedDepartments.length + 
+    selectedWorkArrangements.length 
+    + selectedCities.length 
+    + selectedLanguageRequirements.length
+  ) === 0;
 
   return (
     <>
     <form id="gcx-cm-filter-form">
       <Stack className={styles.filterRow}>
 
-        <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-jobType-label'>
+        {/* OPPORTUNITY DETAILS */}
+        <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-opportunityDetails-label'>
           <Stack horizontal className={styles.label}>
-            <div id='gcx-filter-jobType-label'>
-              <b>{strings.jobType}</b>
+            <div id='gcx-filter-opportunityDetails-label'>
+              <b>{strings.opportunityDetails}</b>
             </div>
           </Stack>
-          <Dropdown 
-            id='ddJobTypeFilter' 
-            aria-labelledby='gcx-filter-jobType-label'
-            styles={{
-              ...dropdownStyles,
-              title: { borderColor: borderColor }
-            }} 
-            placeholder={strings.optionPlaceholder}
-            options={Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn} 
-            onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
-              if (!option) return;
-  
-              const newSelectedKeys = option.selected
-                ? [...selectedJobTypes, option.key] as string[] 
-                : selectedJobTypes.filter(key => key !== option.key);
-  
-              setSelectedJobTypes(newSelectedKeys);
-            }}
-            selectedKeys={selectedJobTypes}
-            multiSelect={true}
-            calloutProps={{styles: calloutStyles}}
-          />
-          {TermChipList(Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn, selectedJobTypes, setSelectedJobTypes, strings.selectedJobTypes, 'gcx-filter-jobType-label')}
-        </Stack>
-  
-        {/* <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-programArea-label'>
-          <Stack horizontal className={styles.label}>
-            <div id='gcx-filter-programArea-label'>
-              <b>{strings.programArea}</b>
-            </div>
-          </Stack>
-          <Dropdown 
-            id='ddProgramAreaFilter' 
-            aria-labelledby='gcx-filter-programArea-label'
-            styles={{
-              ...dropdownStyles,
-              title: { borderColor: borderColor }
-            }} 
-            placeholder={strings.optionPlaceholder}
-            options={Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn} 
-            onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
-              if (!option) return;
-  
-              const newSelectedKeys = option.selected
-                ? [...selectedProgramAreas, option.key] as string[] 
-                : selectedProgramAreas.filter(key => key !== option.key);
-  
-              setSelectedProgramAreas(newSelectedKeys);
-            }}
-            selectedKeys={selectedProgramAreas}
-            multiSelect={true}
-            calloutProps={{styles: calloutStyles}}
-          />
-          {TermChipList(Globals.getLanguage() === Language.French ? props.programAreaListFr : props.programAreaListEn, selectedProgramAreas, setSelectedProgramAreas, strings.selectedProgramAreas, 'gcx-filter-programArea-label')}
-        </Stack> */}
 
-        <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-applicationDeadline-label'>
-          <Stack horizontal className={styles.label}>
-            <div id='gcx-filter-applicationDeadline-label'>
-              <b>{strings.applicationDeadline}</b>
+          <div className={styles.row}>
+            <div>
+              <Dropdown 
+                id='ddJobTypeFilter' 
+                aria-labelledby={strings.jobType}
+                placeholder={strings.jobType}
+                styles={{
+                  ...dropdownStyles,
+                  title: { borderColor: borderColor }
+                }} 
+                options={Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn} 
+                onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
+                  if (!option) return;
+      
+                  const newSelectedKeys = option.selected
+                    ? [...selectedJobTypes, option.key] as string[] 
+                    : selectedJobTypes.filter(key => key !== option.key);
+      
+                  setSelectedJobTypes(newSelectedKeys);
+                }}
+                selectedKeys={selectedJobTypes}
+                multiSelect={true}
+                calloutProps={{styles: calloutStyles}}
+              />
             </div>
-          </Stack>
-          <DatePicker
-            id='dpApplicationDeadlineDate'
-            styles={datePickerStyles}
-            placeholder={strings.datePlaceholder}
-            ariaLabel={strings.datePlaceholder.replace(/-/g, "")}
-            onSelectDate={(date: Date) => {
-              // The format of this date is important
-              setApplicationDeadline(`${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}`);
-            }}
-            value={applicationDeadline ? new Date(applicationDeadline) : undefined}
-            minDate={new Date()} 
-            highlightSelectedMonth={true}
-          />
+            <div>
+              <ComboBox 
+                id='ddClassificationCodeFilter' 
+                aria-label={strings.classification}
+                placeholder={strings.classification}
+                styles={comboBoxStyles}
+                options={Globals.getLanguage() === Language.French ? props.classificationCodeListFr : props.classificationCodeListEn} 
+                onChange={(e: React.FormEvent<IComboBox>, option?: IComboBoxOption) => {
+                  if (!option) return;
+
+                  const newSelectedKeys = option.selected
+                    ? [...selectedClassificationCodes, option.key as string]
+                    : selectedClassificationCodes.filter(key => key !== option.key);
+
+                  setSelectedClassificationCodes(newSelectedKeys);
+                }}
+                selectedKey={selectedClassificationCodes}
+                multiSelect={true}
+                autoComplete="on"
+                calloutProps={{styles: calloutStyles}}
+              />
+            </div>
+            <div>
+              <Dropdown 
+                id='ddClassificationLevelFilter' 
+                aria-labelledby={strings.classificationLevel}
+                placeholder={strings.classificationLevel}
+                styles={{
+                  ...dropdownStyles,
+                  title: { borderColor: borderColor }
+                }} 
+                options={Globals.getLanguage() === Language.French ? props.classificationLevelListFr : props.classificationLevelListEn} 
+                onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
+                  if (!option) return;
+      
+                  const newSelectedKeys = option.selected
+                    ? [...selectedClassificationLevels, option.key] as string[] 
+                    : selectedClassificationLevels.filter(key => key !== option.key);
+      
+                  setSelectedClassificationLevels(newSelectedKeys);
+                }}
+                selectedKeys={selectedClassificationLevels}
+                multiSelect={true}
+                calloutProps={{styles: calloutStyles}}
+              />
+            </div>
+            <div>
+              <ComboBox 
+                id='ddDepartmentFilter' 
+                aria-label={strings.department}
+                placeholder={strings.department}
+                styles={comboBoxStyles} 
+                options={Globals.getLanguage() === Language.French ? props.departmentListFr : props.departmentListEn} 
+                onChange={(e: React.FormEvent<IComboBox>, option?: IComboBoxOption) => {
+                  if (!option) return;
+
+                  const newSelectedKeys = option.selected
+                    ? [...selectedDepartments, option.key as string]
+                    : selectedDepartments.filter(key => key !== option.key);
+
+                  setSelectedDepartments(newSelectedKeys);
+                }}
+                selectedKey={selectedDepartments}
+                multiSelect={true}
+                autoComplete="on"
+                calloutProps={{styles: calloutStyles}}
+              />
+            </div>
+          </div>
         </Stack>
 
+        {/* LOCATION */}
+        <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-location-label'>
+          <Stack horizontal className={styles.label}>
+            <div id='gcx-filter-location-label'>
+              <b>{strings.location}</b>
+            </div>
+          </Stack>
+
+          <div className={styles.row}>
+            <div>
+              <Dropdown 
+                id='ddWorkArrangementFilter' 
+                aria-label={strings.workArrangement}
+                placeholder={strings.workArrangement}
+                styles={{
+                  ...dropdownStyles,
+                  title: { borderColor: borderColor }
+                }} 
+                options={Globals.getLanguage() === Language.French ? props.workArrangementListFr : props.workArrangementListEn} 
+                onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
+                  if (!option) return;
+      
+                  const newSelectedKeys = option.selected
+                    ? [...selectedWorkArrangements, option.key] as string[] 
+                    : selectedWorkArrangements.filter(key => key !== option.key);
+      
+                  setSelectedWorkArrangements(newSelectedKeys);
+                }}
+                selectedKeys={selectedWorkArrangements}
+                multiSelect={true}
+                calloutProps={{styles: calloutStyles}}
+              />
+            </div>
+            <div>
+              <ComboBox 
+                id='ddCityFilter' 
+                aria-label={strings.city}
+                placeholder={strings.city}
+                styles={comboBoxStyles}
+                options={Globals.getLanguage() === Language.French ? props.cityListFr : props.cityListEn} 
+                onChange={(e: React.FormEvent<IComboBox>, option?: IComboBoxOption) => {
+                  if (!option) return;
+
+                  const newSelectedKeys = option.selected
+                    ? [...selectedCities, option.key as string]
+                    : selectedCities.filter(key => key !== option.key);
+
+                  setSelectedCities(newSelectedKeys);
+                }}
+                selectedKey={selectedCities}
+                multiSelect={true}
+                autoComplete="on"
+                calloutProps={{styles: calloutStyles}}
+              />
+            </div>
+          </div>
+        </Stack>
+
+        {/* REQUIREMENTS */}
+        <Stack className={styles.filter} role='group' aria-labelledby='gcx-filter-requirements-label'>
+          <Stack horizontal className={styles.label}>
+            <div id='gcx-filter-requirements-label'>
+              <b>{strings.requirements}</b>
+            </div>
+          </Stack>
+
+          <div className={styles.row}>
+            <div>
+              <Dropdown 
+                id='ddLanguageRequirementsFilter' 
+                aria-label={strings.languageRequirement}
+                placeholder={strings.languageRequirement}
+                styles={{
+                  ...dropdownStyles,
+                  title: { borderColor: borderColor }
+                }} 
+                options={Globals.getLanguage() === Language.French ? props.languageRequirementListFr : props.languageRequirementListEn} 
+                onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
+                  if (!option) return;
+
+                  setSelectedLanguageRequirements(option.key ? option.key as string : '');
+                }}
+                selectedKey={selectedLanguageRequirements}
+                multiSelect={false}
+                calloutProps={{styles: calloutStyles}}
+              />
+            </div>
+          </div>
+        </Stack>
+
+        {/* CHIP LIST */}
+        <div className={styles.chipContainer}>
+            <SelectedChipList />
+        </div>
       </Stack>
 
       <Stack className={styles.controls}>
@@ -257,7 +574,8 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           id='gcx-cm-filter-clear'
           aria-describedby='gcx-cm-filter-title'
           aria-label={strings.clear}
-          disabled={selectedJobTypes.length === 0 /*&& selectedProgramAreas.length === 0*/ && applicationDeadline === ''}
+          styles={defaultButtonStyles}
+          disabled={disabledClearFilter}
           onClick={() => {
             ClearValues();
           }}

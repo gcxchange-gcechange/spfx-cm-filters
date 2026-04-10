@@ -16,14 +16,20 @@ declare interface ISpfxCmFiltersWebPartStrings {
   btnExpanderClosed: string;
   clear: string;
   jobType: string;
-  programArea: string;
   applicationDeadline: string;
   apply: string;
   optionPlaceholder: string;
   datePlaceholder: string;
   remove: string;
-  selectedJobTypes: string;
-  selectedProgramAreas: string;
+  opportunityDetails: string;
+  location: string;
+  requirements: string;
+  classification: string;
+  classificationLevel: string;
+  department: string;
+  workArrangement: string;
+  city: string;
+  languageRequirement: string;
 }
 
 declare module 'SpfxCmFiltersWebPartStrings' {

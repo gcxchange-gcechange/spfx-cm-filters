@@ -18,12 +18,25 @@
       font-weight: 600;
       display: inline-block;
       margin-top: 0;
+      margin-bottom: 10px;
     }
   }
 
   .filterRow {
-    gap: 20px;
+    gap: 15px;
     flex-flow: column;
+
+    .row {
+      display: 'flex';
+      flex-direction: 'row';
+      gap: 10px;
+      justify-content: 'flex-start';
+
+      >div {
+        width: calc((100% - calc(10px * 3)) / 4);
+        max-width: calc((100% - calc(10px * 3)) / 4);
+      }
+    }
   }
 
   .filter {
@@ -36,37 +49,24 @@
     cursor: default;
 
     b {
-      font-weight: 500;
       font-size: 14px;
+      font-weight: 600;
+      //color: #044D4D;
     }
   }
 
   .chipContainer {
-    padding-top: 3px;
-
-    .chipLabel {
-      margin: 10px 0;
-      font-weight: 500;
-      font-size: 14px;
-      display: block;
-
-      div {
-        cursor: default;
-      }
-    }
-
     .chip {
       display: inline-block;
       width: fit-content;
       padding: 0 0 0 10px;
       margin: 2px 2px;
       border-radius: 20px;
-      background-color: #b6d1d1;
-      border: 1px solid #153c3e;
+      background-color: #044D4D;
 
       span {
         pointer-events: none;
-        color: #153c3e
+        color: #FFF
       }
 
       button {
@@ -93,7 +93,15 @@
   @media (max-width: 900px) {
     .filterRow {
       gap: 10px;
-      flex-flow: column;
+
+      .row {
+        flex-direction: 'column';
+        
+        >div {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+      }
     }
 
     .controls {
@@ -105,5 +113,22 @@
     .controls {
       flex-flow: column;
     }
+  }
+
+  :global(.ms-ComboBox.is-open)::after,
+  :global(.ms-ComboBox:focus-within)::after {
+    border-color: rgb(3, 120, 124) !important;
+  }
+
+  :global(.ms-Dropdown.is-open .ms-Dropdown-title),
+  :global(.ms-Dropdown:focus-within .ms-Dropdown-title) {
+    border-width: 2px;
+    border-color: rgb(3, 120, 124) !important;
+  }
+
+  :global(.ms-Dropdown:not(.is-open) .ms-Dropdown-title),
+  :global(.ms-ComboBox:not(.is-open))::after {
+    border-color: #c2c2c2;
+    border-width: 1px;
   }
 }

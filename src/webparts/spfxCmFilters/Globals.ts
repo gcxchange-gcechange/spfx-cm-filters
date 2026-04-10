@@ -12,7 +12,7 @@ export class Globals {
   private static _debugMode: boolean = false;
   private static _cacheTime: number;
   private static _jobTypeTermSetGuid: string;
-  private static _programAreaTermSetGuid: string;
+  private static _isOpen: boolean = false;
   
   public static getLanguage(): string {
     return this._language;
@@ -65,12 +65,12 @@ export class Globals {
   public static setJobTypeTermSetGuid(guid: string): void {
     this._jobTypeTermSetGuid = guid;
   }
-  
-  public static getProgramAreaTermSetGuid(): string {
-    return this._programAreaTermSetGuid;
+
+  public static isOpen(): boolean {
+    return this._isOpen;
   }
-  
-  public static setProgramAreaTermSetGuid(guid: string): void {
-    this._programAreaTermSetGuid = guid;
+
+  public static setOpen(state: boolean):void {
+    this._isOpen = state;
   }
 }

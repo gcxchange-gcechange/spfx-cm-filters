@@ -9,15 +9,15 @@ interface IsAvailableTag {
 }
 
 class Term {
-  id: string;
-  isDeprecated: boolean;
-  childrenCount: number;
-  createdDateTime: string;
-  lastModifiedDateTime: string;
-  setId: string;
-  labels: Label[];
-  descriptions: unknown[];
-  isAvailableForTagging: IsAvailableTag[];
+  id!: string;
+  isDeprecated!: boolean;
+  childrenCount!: number;
+  createdDateTime!: string;
+  lastModifiedDateTime!: string;
+  setId!: string;
+  labels!: Label[];
+  descriptions!: unknown[];
+  isAvailableForTagging!: IsAvailableTag[];
 }
 
 export interface TermSet {
