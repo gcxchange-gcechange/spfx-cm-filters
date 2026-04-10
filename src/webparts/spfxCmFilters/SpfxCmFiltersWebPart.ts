@@ -88,12 +88,13 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
     this.properties.ClassificationCodeKey ??= CrawledPropertyOption.ID;
     this.properties.ClassificationLevelKey ??= CrawledPropertyOption.ID;
     this.properties.DepartmentKey ??= CrawledPropertyOption.ID;
-    this.properties.WorkArrangementKey ??= CrawledPropertyOption.ID;
+    this.properties.WorkArrangementKey ??= CrawledPropertyOption.NameEn;
     this.properties.CityKey ??= CrawledPropertyOption.ID;
     this.properties.LanguageRequirementKey ??= CrawledPropertyOption.ID;
+    this.properties.cacheTime ??= 30;
 
     Globals.setLanguage(this.properties.language);
-    Globals.setCacheTime(this.properties.cacheTime ? this.properties.cacheTime : 30);
+    Globals.setCacheTime(this.properties.cacheTime);
     Globals.setDebugMode(this.properties.debug);
     Globals.setJobTypeTermSetGuid(this.properties.jobTypeTermSetGuid);
     
@@ -144,7 +145,6 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
       this.domElement.style.setProperty('--link', semanticColors.link || null);
       this.domElement.style.setProperty('--linkHovered', semanticColors.linkHovered || null);
     }
-
   }
 
   protected onDispose(): void {
@@ -166,6 +166,13 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
     }));
   }
 
+  private getLanguageOption(): IPropertyPaneDropdownOption[] {
+    return (Object.keys(Language) as Array<keyof typeof Language>).map((key) => ({
+      key: Language[key],
+      text: Language[key]
+    }));
+  }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
@@ -175,58 +182,57 @@ export default class SpfxCmFiltersWebPart extends BaseClientSideWebPart<ISpfxCmF
           },
           groups: [
             {
-              groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('language', {
+                PropertyPaneDropdown('language', {
                   label: 'Language',
-                  value: Globals.getLanguage() || Language.English,
-                  placeholder: `${Language.English} or ${Language.French}`
+                  options: this.getLanguageOption(),
+                  selectedKey: Globals.getLanguage() || Language.English,
                 }),
                 PropertyPaneTextField('jobTypeTermSetGuid', {
                   label: 'JobType term set GUID',
-                  value: Globals.getJobTypeTermSetGuid(),
+                  value: Globals.getJobTypeTermSetGuid() || '45f37f08-3ff4-4d84-bf21-4a77ddffcf3e',
                   placeholder: '45f37f08-3ff4-4d84-bf21-4a77ddffcf3e'
                 }),
                 PropertyPaneDropdown('ClassificationCodeKey', {
-                  label: 'Classification Code Key',
+                  label: 'ClassificationCode mapped crawled property',
                   options: this.getCrawledPropertyOption(),
                   selectedKey: this.properties.ClassificationCodeKey || CrawledPropertyOption.ID
                 }),
                 PropertyPaneDropdown('ClassificationLevelKey', {
-                  label: 'Classification Level Key',
+                  label: 'ClassificationLevel mapped crawled property',
                   options: this.getCrawledPropertyOption(),
                   selectedKey: this.properties.ClassificationLevelKey || CrawledPropertyOption.ID
                 }),
                 PropertyPaneDropdown('DepartmentKey', {
-                  label: 'Department Key',
+                  label: 'Department mapped crawled property',
                   options: this.getCrawledPropertyOption(),
                   selectedKey: this.properties.DepartmentKey || CrawledPropertyOption.ID
                 }),
                 PropertyPaneDropdown('WorkArrangementKey', {
-                  label: 'Work Arrangement Key',
+                  label: 'WorkArrangement mapped crawled property',
                   options: this.getCrawledPropertyOption(),
                   selectedKey: this.properties.WorkArrangementKey || CrawledPropertyOption.NameEn
                 }),
                 PropertyPaneDropdown('CityKey', {
-                  label: 'City Key',
+                  label: 'City mapped crawled property',
                   options: this.getCrawledPropertyOption(),
                   selectedKey: this.properties.CityKey || CrawledPropertyOption.ID
                 }),
                 PropertyPaneDropdown('LanguageRequirementKey', {
-                  label: 'Language Requirement Key',
+                  label: 'LanguageRequirement mapped crawled property',
                   options: this.getCrawledPropertyOption(),
                   selectedKey: this.properties.LanguageRequirementKey || CrawledPropertyOption.ID
                 }),
                 PropertyPaneTextField('cacheTime', {
                   label: 'Cache Time',
                   description: 'Enter a number in minutes',
-                  value: Globals.getCacheTime().toString(),
+                  value: Globals.getCacheTime().toString() || '30',
                   onGetErrorMessage: (value: string): string => {
                     if (isNaN(Number(value)))
-                      return "Please enter a valid number.";
+                      return 'Please enter a valid number.';
                     else if (Number(value) <= 0)
-                      return "Please number greater than 0";
-                    return "";
+                      return 'Please number greater than 0';
+                    return '';
                   }
                 }),
                 PropertyPaneToggle('debug', {

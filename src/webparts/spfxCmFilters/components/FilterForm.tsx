@@ -144,22 +144,22 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
       || selectedLanguageRequirements === '' && appliedLanguageRequirements.current === undefined;
 
     const selectedMatchesApplied = isMatchJobType 
-    && isMatchClassificationCodes
-    && isMatchClassificationLevels
-    && isMatchDepartments
-    && isMatchWorkArrangements
-    && isMatchCities
-    && isMatchLanguageRequirements;
+      && isMatchClassificationCodes
+      && isMatchClassificationLevels
+      && isMatchDepartments
+      && isMatchWorkArrangements
+      && isMatchCities
+      && isMatchLanguageRequirements;
     
     setDisableApply(selectedMatchesApplied);
 
     const allCleared = selectedJobTypes.length === 0 
-    && selectedClassificationCodes.length === 0
-    && selectedClassificationLevels.length === 0
-    && selectedDepartments.length === 0
-    && selectedWorkArrangements.length === 0
-    && selectedCities.length === 0
-    && selectedLanguageRequirements === '';
+      && selectedClassificationCodes.length === 0
+      && selectedClassificationLevels.length === 0
+      && selectedDepartments.length === 0
+      && selectedWorkArrangements.length === 0
+      && selectedCities.length === 0
+      && selectedLanguageRequirements === '';
 
     if (allCleared && selectedMatchesApplied) {
       SetSessionKeys();
