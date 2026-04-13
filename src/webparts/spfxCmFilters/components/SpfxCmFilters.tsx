@@ -278,7 +278,7 @@ export default class SpfxCmFilters extends React.Component<ISpfxCmFiltersProps> 
 
     return (
       <section className={`${styles.spfxCmFilters} ${hasTeamsContext ? styles.teams : ''}`}>
-        <div className={styles.filtersHeader} style={{paddingBottom: open ? '10px' : '0px'}}>
+        <div className={styles.filtersHeader} style={{paddingBottom: open ? '20px' : '0px'}}>
           <h2 id='gcx-cm-filter-title'>
             {this.strings.Filters}
           </h2>
