@@ -381,7 +381,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
             <div>
               <Dropdown 
                 id='ddJobTypeFilter' 
-                aria-labelledby={strings.jobType}
+                aria-label={strings.jobType}
                 placeholder={strings.jobType}
                 styles={{
                   ...dropdownStyles,
@@ -422,12 +422,16 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 multiSelect={true}
                 autoComplete="on"
                 calloutProps={{styles: calloutStyles}}
+                buttonIconProps={{
+                  iconName: 'ChevronDown',
+                  ariaLabel: strings.classification 
+                }}
               />
             </div>
             <div>
               <Dropdown 
                 id='ddClassificationLevelFilter' 
-                aria-labelledby={strings.classificationLevel}
+                aria-label={strings.classificationLevel}
                 placeholder={strings.classificationLevel}
                 styles={{
                   ...dropdownStyles,
@@ -468,6 +472,10 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 multiSelect={true}
                 autoComplete="on"
                 calloutProps={{styles: calloutStyles}}
+                buttonIconProps={{
+                  iconName: 'ChevronDown',
+                  ariaLabel: strings.department 
+                }}
               />
             </div>
           </div>
@@ -526,6 +534,10 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 multiSelect={true}
                 autoComplete="on"
                 calloutProps={{styles: calloutStyles}}
+                buttonIconProps={{
+                  iconName: 'ChevronDown',
+                  ariaLabel: strings.city 
+                }}
               />
             </div>
           </div>
