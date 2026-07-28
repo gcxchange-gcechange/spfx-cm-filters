@@ -12,7 +12,7 @@ define([], function() {
     "AppOfficeEnvironment": "The app is running in office.com",
     "AppOutlookEnvironment": "The app is running in Outlook",
     "UnknownEnvironment": "The app is running in an unknown environment",
-    "Filters": "Filtre les opportunités",
+    "Filters": "Filtrer les opportunités",
     "btnExpanderOpen": "Cliquez pour développer les filtres",
     "btnExpanderClosed": "Cliquez pour minimiser les filtres",
     "clear": "Effacer les filtres",
