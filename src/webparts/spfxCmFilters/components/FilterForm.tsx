@@ -305,6 +305,8 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
     },
   };
 
+  // borderColor now lives in the shared title style so it no longer
+  // overwrites the ellipsis rules when each Dropdown is rendered.
   const dropdownStyles: Partial<IDropdownStyles> = {
     root: {
       selectors: {
@@ -317,6 +319,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
       width: '100%'
     },
     title: {
+      borderColor: borderColor,
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap'
@@ -366,7 +369,9 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
 
   return (
     <>
-    <form id="gcx-cm-filter-form">
+    {/* className={styles.spfxCmFilters} ensures the nested SCSS rules apply.
+        Remove it if a parent component already applies that class. */}
+    <form id="gcx-cm-filter-form" className={styles.spfxCmFilters}>
       <Stack className={styles.filterRow}>
 
         {/* OPPORTUNITY DETAILS */}
@@ -383,10 +388,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 id='ddJobTypeFilter' 
                 aria-label={strings.jobType}
                 placeholder={strings.jobType}
-                styles={{
-                  ...dropdownStyles,
-                  title: { borderColor: borderColor }
-                }} 
+                styles={dropdownStyles}
                 options={Globals.getLanguage() === Language.French ? props.jobTypeListFr : props.jobTypeListEn} 
                 onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
                   if (!option) return;
@@ -433,10 +435,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 id='ddClassificationLevelFilter' 
                 aria-label={strings.classificationLevel}
                 placeholder={strings.classificationLevel}
-                styles={{
-                  ...dropdownStyles,
-                  title: { borderColor: borderColor }
-                }} 
+                styles={dropdownStyles}
                 options={Globals.getLanguage() === Language.French ? props.classificationLevelListFr : props.classificationLevelListEn} 
                 onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
                   if (!option) return;
@@ -495,10 +494,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 id='ddWorkArrangementFilter' 
                 aria-label={strings.workArrangement}
                 placeholder={strings.workArrangement}
-                styles={{
-                  ...dropdownStyles,
-                  title: { borderColor: borderColor }
-                }} 
+                styles={dropdownStyles}
                 options={Globals.getLanguage() === Language.French ? props.workArrangementListFr : props.workArrangementListEn} 
                 onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
                   if (!option) return;
@@ -557,10 +553,7 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
                 id='ddLanguageRequirementsFilter' 
                 aria-label={strings.languageRequirement}
                 placeholder={strings.languageRequirement}
-                styles={{
-                  ...dropdownStyles,
-                  title: { borderColor: borderColor }
-                }} 
+                styles={dropdownStyles}
                 options={Globals.getLanguage() === Language.French ? props.languageRequirementListFr : props.languageRequirementListEn} 
                 onChange={(e: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => { 
                   if (!option) return;
@@ -575,10 +568,8 @@ const FilterForm = (props: ISearchFormProps): JSX.Element => {
           </div>
         </Stack>
 
-        {/* CHIP LIST */}
-        <div className={styles.chipContainer}>
-            <SelectedChipList />
-        </div>
+        {/* CHIP LIST (SelectedChipList renders its own chipContainer) */}
+        <SelectedChipList />
       </Stack>
 
       <Stack className={styles.controls}>
